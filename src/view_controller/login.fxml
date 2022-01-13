@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view_controller.LoginController">
+    <children>
+        <VBox alignment="CENTER" prefHeight="503.0" prefWidth="392.0">
+            <children>
+                <VBox prefHeight="270.0" prefWidth="257.0" style="-fx-border-color: lightgray; -fx-border-radius: 10; -fx-background-color: white;">
+                    <children>
+                        <Label fx:id="loginLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="94.0" prefWidth="390.0" style="-fx-background-color: darkslategray; -fx-background-radius: 5;" text="LOG IN" textFill="WHITE">
+                            <font>
+                                <Font name="SansSerif Regular" size="34.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="userNameTF" prefHeight="65.0" promptText="USERNAME" style="-fx-border-radius: 5;">
+                            <VBox.margin>
+                                <Insets bottom="3.0" top="10.0" />
+                            </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="passwordTF" prefHeight="65.0" promptText="PASSWORD" style="-fx-border-radius: 5;">
+                            <VBox.margin>
+                                <Insets bottom="10.0" top="5.0" />
+                            </VBox.margin>
+                        </TextField>
+                        <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="7.0" mnemonicParsing="false" onAction="#logOn" prefHeight="68.0" prefWidth="394.0" text="LOG IN">
+                            <font>
+                                <Font name="System Bold" size="21.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </VBox>
+                <HBox prefHeight="47.0" prefWidth="392.0">
+                    <children>
+                        <GridPane alignment="CENTER" prefHeight="47.0" prefWidth="397.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Label fx:id="zoneIDLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="198.0" text="ZONE ID:">
+                                    <font>
+                                        <Font name="SansSerif Regular" size="16.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="identifiedZonelbl" prefHeight="18.0" prefWidth="198.0" GridPane.columnIndex="1">
+                                    <font>
+                                        <Font name="SansSerif Regular" size="16.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </GridPane>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</HBox>
