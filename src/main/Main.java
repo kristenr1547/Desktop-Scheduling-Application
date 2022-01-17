@@ -5,13 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
-import jdbcHelper.JDBC;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import helper.JDBC;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Locale;
-
 
 
 public class Main extends Application{
@@ -26,10 +22,10 @@ public class Main extends Application{
     public static void main(String[] args) throws SQLException {
 	// write your code here
         JDBC.openConnection();
-        Locale.setDefault(new Locale("fr"));
+//        Locale.setDefault(new Locale("fr"));
         launch(args);
-
         JDBC.closeConnection();
+
 
 
 

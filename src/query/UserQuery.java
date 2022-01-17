@@ -1,6 +1,6 @@
-package daoImplementation;
+package query;
 
-import jdbcHelper.JDBC;
+import helper.JDBC;
 import model.User;
 
 import java.sql.Connection;
@@ -9,9 +9,9 @@ import java.sql.Statement;
 
 public class UserQuery {
 
-    public static Connection conn = null;
-    public static Statement mystmt = null;
-   public static  ResultSet result = null;
+    private static Connection conn = null;
+    private static Statement mystmt = null;
+    private static  ResultSet result = null;
 
     public static User verifyUser(String username, String password){
         try{
@@ -25,6 +25,8 @@ public class UserQuery {
                     System.out.println("you are logged in");
                     return u;
                 }
+//                mystmt.close();
+//                conn.close();
         }
 
         }catch(Exception e){

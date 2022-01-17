@@ -1,10 +1,15 @@
 package view_controller;
 
-import daoImplementation.UserQuery;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import query.UserQuery;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -18,19 +23,17 @@ public class LoginController implements Initializable {
         try{
             rb = ResourceBundle.getBundle("view_controller/resourceFile", Locale.getDefault());
             if(Locale.getDefault().getLanguage().equals("fr")){
-//                System.out.println(rb.getString("hello")+ " "+ rb.getString("you"));
                 loginButton.setText(rb.getString("LOGINBTN"));
                 loginLabel.setText(rb.getString("LOGINLBL"));
                 passwordTF.setText(rb.getString("PASSWORD"));
                 userNameTF.setText(rb.getString("USERNAME"));
                 zoneIDLabel.setText(rb.getString("ZONEID"));
-                identifiedZonelbl.setText(String.valueOf(Locale.getDefault()));
-
 
             }
         }catch (MissingResourceException e){
             //nothing for now
         }
+        identifiedZonelbl.setText(String.valueOf(Locale.getDefault()));
     }
 
     @FXML
@@ -51,19 +54,26 @@ public class LoginController implements Initializable {
     @FXML
     private Label zoneIDLabel;
 
+    private Parent scene;
+    private Stage stage;
 
-    private boolean authenticateUser(){
-        return true;
+    private void alertUser(){
+        Alert incorrectLogin = new Alert(Alert.AlertType.WARNING);
+        incorrectLogin.setTitle(rb.getString("alertTitle"));
+        incorrectLogin.setHeaderText(rb.getString("alertHeader"));
+        incorrectLogin.showAndWait();
     }
     @FXML
-    void logOn(ActionEvent event) {
-        if(UserQuery.verifyUser(userNameTF.getText(), passwordTF.getText()) == null){
-            Alert incorrectLogin = new Alert(Alert.AlertType.WARNING);
-            incorrectLogin.setTitle(rb.getString("alertTitle"));
-            incorrectLogin.setHeaderText(rb.getString("alertHeader"));
-            incorrectLogin.showAndWait();
+    void logOn(ActionEvent event) throws IOException {
+        if(UserQuery.verifyUser(userNameTF.getText(), passwordTF.getText()) != null){
+            System.out.println("logged in");
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view_controller/dashboard.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+
         }else{
-            System.out.println("Logged in");
+            alertUser();
         }
 
 
