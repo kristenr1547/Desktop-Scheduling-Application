@@ -6,8 +6,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import helper.JDBC;
+import model.FirstLevelDiv;
+import query.FirstLevelDivQuery;
+
 import java.sql.SQLException;
-import java.util.Locale;
+
 
 
 public class Main extends Application{

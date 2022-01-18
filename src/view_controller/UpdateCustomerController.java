@@ -10,16 +10,16 @@ import javafx.scene.control.TextField;
 import model.Country;
 import model.FirstLevelDiv;
 import query.CountryQuery;
+
 import java.net.URL;
 import java.util.ResourceBundle;
-import helper.InputValidate;
 
-public class AddCustomerController implements Initializable {
+public class UpdateCustomerController implements Initializable {
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-    countryCombo.setItems(CountryQuery.getAllCountries());
-    customerIDTF.setPromptText("AUTO GEN-DISABLED");
-    customerIDTF.setDisable(true);
+        countryCombo.setItems(CountryQuery.getAllCountries());
+        customerIDTF.setDisable(true);
     }
 
     @FXML
@@ -66,43 +66,4 @@ public class AddCustomerController implements Initializable {
     void onFirstLevelDiv(ActionEvent event) {
 
     }
-
-    @FXML
-    void onSave(ActionEvent event) {
-        String name = null;
-        String postal = null;
-        String phone = null;
-        String address = null;
-        boolean errorFound = false;
-
-        if(InputValidate.validateString(nameTF.getText())){
-            name = nameTF.getText();
-        }else{
-            errorFound = true;
-        }
-        if(InputValidate.validateString(addressTF.getText())){
-            address = addressTF.getText();
-        }else{
-            errorFound = true;
-        }
-        if(InputValidate.validateString(phoneTF.getText())){
-            phone = phoneTF.getText();
-        }else{
-            errorFound = true;
-        }
-        if(InputValidate.validateString(addressTF.getText())){
-            address = addressTF.getText();
-        }else{
-            errorFound = true;
-        }
-        if(!errorFound){
-            //create new customer object
-
-
-        }
-
-    }
-
-
-
 }

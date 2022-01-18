@@ -1,21 +1,17 @@
 package query;
 
 import helper.JDBC;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
-import model.User;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.*;
 
 public class CustomerQuery {
 
     private static Connection conn = null;
     private static Statement mystmt = null;
+    private static PreparedStatement ps = null;
     private static ResultSet result = null;
 
     public static ObservableList<Customer> getAllCustomers(){
@@ -34,6 +30,26 @@ public class CustomerQuery {
         }
         return null;
     }
+
+
+public static boolean deleteCustomer(Customer c){
+        int id = c.getId();
+        String sqlDelete = "DELETE FROM customers WHERE Customer_ID = ?";
+        try{
+            conn = JDBC.getConnection();
+            ps = conn.prepareStatement(sqlDelete);
+            ps.setInt(1, id);
+            int confirmDeleted = ps.executeUpdate();
+            if(confirmDeleted < 1){
+                return false;
+            }else{
+                return true;
+            }
+        }catch (SQLException e){
+            //
+        }
+        return false;
+}
 
 
 

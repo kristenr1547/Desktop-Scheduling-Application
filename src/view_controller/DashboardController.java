@@ -1,32 +1,26 @@
 package view_controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Customer;
 import query.CustomerQuery;
-
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
-//    ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        allCustomers = CustomerQuery.getAllCustomers();
         customerTable.setItems(CustomerQuery.getAllCustomers());
         custIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         custNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -129,7 +123,35 @@ public class DashboardController implements Initializable {
 
     @FXML
     void deleteCustomer(ActionEvent event) {
-
+        Customer sCustomer = (Customer) customerTable.getSelectionModel().getSelectedItem();
+        //if no customer is selected
+        if(sCustomer == null){
+            Alert noSelectionAlert = new Alert(Alert.AlertType.ERROR);
+            noSelectionAlert.setTitle("Customer");
+            noSelectionAlert.setContentText("Please select a customer to delete");
+            noSelectionAlert.showAndWait();
+        }else{
+            //if a customer is selected code to be completed
+            Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            deleteAlert.setTitle("Delete Customer");
+            deleteAlert.setContentText("Are you sure you want to delete the customer? This will delete all appointments associated with customer.");
+            Optional<ButtonType> result = deleteAlert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK){
+                //if customer deletion is confirmed
+                if(CustomerQuery.deleteCustomer(sCustomer)){
+                    Alert deleteSuccess = new Alert(Alert.AlertType.INFORMATION);
+                    deleteSuccess.setTitle("Customer");
+                    deleteSuccess.setContentText("Customer was successfully deleted");
+                    deleteSuccess.showAndWait();
+                    customerTable.setItems(CustomerQuery.getAllCustomers());
+                }
+                //if a connection was lost, or other deletion error occurs
+            Alert deleteError = new Alert(Alert.AlertType.INFORMATION);
+            deleteError.setTitle("Customer");
+            deleteError.setContentText("Something went wrong with customer to be deleted");
+            deleteError.showAndWait();
+            }
+        }
     }
 
     @FXML
