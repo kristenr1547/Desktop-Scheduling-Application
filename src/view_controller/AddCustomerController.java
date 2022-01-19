@@ -25,12 +25,10 @@ import static query.FirstLevelDivQuery.getAllFirstLevelDiv;
 public class AddCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        if(allCountries.isEmpty()){
-//            allCountries = CountryQuery.getAllCountries();
-//            countryCombo.setItems(allCountries);
-//        }
-         customerIDTF.setPromptText("AUTO GEN-DISABLED");
-         customerIDTF.setDisable(true);
+
+        countryCombo.setItems(CountryQuery.getAllCountries());
+        customerIDTF.setPromptText("AUTO GEN-DISABLED");
+        customerIDTF.setDisable(true);
     }
     Stage stage;
     Parent scene;

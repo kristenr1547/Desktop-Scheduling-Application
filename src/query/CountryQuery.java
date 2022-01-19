@@ -11,10 +11,10 @@ public class CountryQuery {
     private static Statement mystmt = null;
     private static PreparedStatement ps = null;
     private static ResultSet result = null;
-    private static ObservableList<Country> allCountries = FXCollections.observableArrayList();
 
     //for add and update customer combo
     public static ObservableList<Country> getAllCountries(){
+        ObservableList<Country> allCountries = FXCollections.observableArrayList();
         try{
             mystmt = conn.createStatement();
             result = mystmt.executeQuery("SELECT * FROM countries");

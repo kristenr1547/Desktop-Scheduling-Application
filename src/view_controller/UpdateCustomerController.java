@@ -24,7 +24,7 @@ public class UpdateCustomerController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        countryCombo.setItems(CountryQuery.getAllCountries());
+        countryCombo.setItems(CountryQuery.getAllCountries());
         customerIDTF.setDisable(true);
         customerIDTF.setText(String.valueOf(updateCustomer.getId()));
         nameTF.setText(String.valueOf(updateCustomer.getName()));
