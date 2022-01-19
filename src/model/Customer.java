@@ -9,10 +9,10 @@ public class Customer {
     private String address;
     private String postal;
     private String phone;
-    private int divisionId;
-    private FirstLevelDiv fld;
-    private int countryId;
-    private Country country;
+    private int divisionId; //use this for searching for firstLevelDiv object
+    private FirstLevelDiv fld; //this is for combobox
+    private int countryId; //for selecting the country
+    private Country country; //for using with the combobox
 
 //overloaded constructer when customers are added from db
     public Customer(int id, String name, String address, String postal, String phone, int divisionId) {
@@ -22,21 +22,9 @@ public class Customer {
         this.postal = postal;
         this.phone = phone;
         this.divisionId = divisionId;
-        fld = FirstLevelDivQuery.createFirstLevelDiv(divisionId);
+        fld = FirstLevelDivQuery.createFirstLevelDiv(divisionId); //queries db to find matching id for division
         countryId = fld.getCountryID();
-        country = CountryQuery.createCountry(countryId);
-    }
-    //overloaded constructor for when adding customers into db from gui
-    public Customer(int id, String name, String address, String postal, String phone, int divisionId, Country country, FirstLevelDiv fld){
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.postal = postal;
-        this.phone = phone;
-        this.country = country;
-        this.fld = fld;
-        countryId = country.getCountryID();
-        divisionId = fld.getDivID();
+        country = CountryQuery.createCountry(countryId); //queries db to find matching id for country
     }
 
     public int getId() {

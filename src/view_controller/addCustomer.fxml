@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="728.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view_controller.AddCustomerController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="728.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view_controller.AddCustomerController">
     <children>
         <HBox alignment="TOP_CENTER" prefHeight="75.0" prefWidth="995.0" style="-fx-background-color: DARKSLATEGREY;">
             <children>
@@ -66,7 +73,7 @@
                         <TextField fx:id="addressTF" focusTraversable="false" prefHeight="39.0" prefWidth="375.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="postalTF" focusTraversable="false" prefHeight="39.0" prefWidth="251.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <TextField fx:id="customerIDTF" editable="false" focusTraversable="false" prefHeight="39.0" prefWidth="375.0" GridPane.columnIndex="1" />
-                        <ComboBox fx:id="countryCombo" prefHeight="26.0" prefWidth="300.0" promptText="Country" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <ComboBox fx:id="countryCombo" onAction="#onCountrySelection" prefHeight="26.0" prefWidth="300.0" promptText="Country" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                         <ComboBox fx:id="firstLevelDiv" prefHeight="26.0" prefWidth="300.0" promptText="First-Level Division" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                             <children>
@@ -74,6 +81,8 @@
                                 <Label fx:id="phoneErrorLbl" text="Please enter a phone number." visible="false" />
                                 <Label fx:id="addressErrorLbl" text="Please enter an address." visible="false" />
                                 <Label fx:id="postalErrorLbl" text="Please enter a postal code." visible="false" />
+                        <Label fx:id="countryError" text="Please select a country." visible="false" />
+                        <Label fx:id="fldError" text="Please select a first-level division." visible="false" />
                             </children>
                         </VBox>
                     </children>
@@ -99,4 +108,3 @@
         </HBox>
     </children>
 </VBox>
-

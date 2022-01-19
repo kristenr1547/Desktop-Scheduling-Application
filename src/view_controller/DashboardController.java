@@ -17,11 +17,13 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static view_controller.UpdateCustomerController.setCustomer;
+
 public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        customerTable.setItems(CustomerQuery.getAllCustomers());
+        customerTable.setItems(CustomerQuery.getAllCustomers()); //queries db to create customer objects and add them to ObservableList
         custIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         custNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         custPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
@@ -160,8 +162,21 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    void updateCustomer(ActionEvent event) {
-
+    void updateCustomer(ActionEvent event) throws IOException {
+        Customer sCustomer = (Customer) customerTable.getSelectionModel().getSelectedItem();
+        //if no customer is selected
+        if(sCustomer == null){
+            Alert noSelectionAlert = new Alert(Alert.AlertType.ERROR);
+            noSelectionAlert.setTitle("Customer");
+            noSelectionAlert.setContentText("Please select a customer to update");
+            noSelectionAlert.showAndWait();
+        }else{
+            setCustomer(sCustomer);
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view_controller/updateCustomer.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
     }
 
 
