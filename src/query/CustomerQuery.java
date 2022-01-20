@@ -50,6 +50,47 @@ public static boolean deleteCustomer(Customer c){
         }
         return false;
 }
+    public static void insertCustomer(String name, String address, String postal, String phone, int divID){
+
+        String sqlInsert = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID)" +
+                            "VALUES(?,?,?,?,?)         ";
+        try{
+            conn = JDBC.getConnection();
+            ps = conn.prepareStatement(sqlInsert);
+            ps.setString(1, name);
+            ps.setString(2, address);
+            ps.setString(3, postal);
+            ps.setString(4, phone);
+            ps.setInt(5,divID);
+            ps.executeUpdate();
+            System.out.println("customer insert ran");
+
+        }catch (SQLException e){
+            //
+            System.out.println("something went wrong with insert into customers");
+        }
+    }
+    public static void updateCustomer(String name, String address, String postal, String phone, int divID, int customerID){
+
+        String sqlUpdate =  "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
+        try{
+            conn = JDBC.getConnection();
+            ps = conn.prepareStatement(sqlUpdate);
+            ps.setString(1, name);
+            ps.setString(2, address);
+            ps.setString(3, postal);
+            ps.setString(4, phone);
+            ps.setInt(5,divID);
+            ps.setInt(6,customerID);
+            ps.executeUpdate();
+            System.out.println("customer update ran");
+
+        }catch (SQLException e){
+            //
+            System.out.println("something went wrong with update in customers /n"
+            + e);
+        }
+    }
 
 
 

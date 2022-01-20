@@ -10,10 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import model.Appointment;
+import model.Contact;
 import model.Customer;
+import query.AppointmentQuery;
 import query.CustomerQuery;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -30,75 +34,53 @@ public class DashboardController implements Initializable {
         custAddressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         custPostalCol.setCellValueFactory(new PropertyValueFactory<>("postal"));
         custDivIDCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
+        //setting up appointment table with all appointments
+        appointmentTable.setItems(AppointmentQuery.getAllAppointments());
+        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+        apptCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+        apptIdCol.setCellValueFactory(new PropertyValueFactory<>("apptID"));
+        apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+        apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
     }
-
-
     @FXML
-    private Button CustDeleteBtn;
-
+    private TableView<Appointment> appointmentTable;
     @FXML
-    private Button apptAddBtn;
-
+    private TableColumn<Appointment, Integer> apptContactCol;
     @FXML
-    private TableColumn<?, ?> apptContactCol;
-
+    private TableColumn<Appointment, Integer> apptCustomerIDCol;
     @FXML
-    private TableColumn<?, ?> apptCustomerIDCol;
-
+    private TableColumn<Appointment, String> apptDescriptionCol;
     @FXML
-    private TableColumn<?, ?> apptDescriptionCol;
-
+    private TableColumn<Appointment, LocalDateTime> apptEndCol;
     @FXML
-    private TableColumn<?, ?> apptEndCol;
-
+    private TableColumn<Appointment, Integer> apptIdCol;
     @FXML
-    private TableColumn<?, ?> apptIdCol;
-
+    private TableColumn<Appointment, String> apptLocationCol;
     @FXML
-    private TableColumn<?, ?> apptLocationCol;
-
+    private TableColumn<Appointment, LocalDateTime> apptStartCol;
     @FXML
-    private TableColumn<?, ?> apptStartCol;
-
+    private TableColumn<Appointment, String> apptTitleCol;
     @FXML
-    private TableColumn<?, ?> apptTitleCol;
-
+    private TableColumn<Appointment, String> apptTypeCol;
     @FXML
-    private TableColumn<?, ?> apptTypeCol;
-
-    @FXML
-    private Button apptUpdateBtn;
-
-    @FXML
-    private TableColumn<?, ?> apptUserIDCol;
-
-    @FXML
-    private Button aptDeleteBtn;
-
-    @FXML
-    private Button custAddBtn;
-
+    private TableColumn<Appointment, Integer> apptUserIDCol;
     @FXML
     private TableColumn<Customer, String> custAddressCol;
-
     @FXML
     private TableColumn<Customer, Integer> custDivIDCol;
-
     @FXML
     private TableColumn<Customer, Integer> custIDCol;
-
     @FXML
     private TableColumn<Customer, String> custNameCol;
-
     @FXML
     private TableColumn<Customer, String> custPhoneCol;
-
     @FXML
     private TableColumn<Customer, String> custPostalCol;
-
-    @FXML
-    private Button custUpdateBtn;
-
     @FXML
     private TableView<Customer> customerTable;
 
@@ -141,18 +123,13 @@ public class DashboardController implements Initializable {
             if(result.isPresent() && result.get() == ButtonType.OK){
                 //if customer deletion is confirmed
                 if(CustomerQuery.deleteCustomer(sCustomer)){
+                    //fixme add code to remove associated appointments here
                     Alert deleteSuccess = new Alert(Alert.AlertType.INFORMATION);
                     deleteSuccess.setTitle("Customer");
                     deleteSuccess.setContentText("Customer was successfully deleted");
                     deleteSuccess.showAndWait();
                     customerTable.setItems(CustomerQuery.getAllCustomers());
-                }
-                //if a connection was lost, or other deletion error occurs
-            Alert deleteError = new Alert(Alert.AlertType.INFORMATION);
-            deleteError.setTitle("Customer");
-            deleteError.setContentText("Something went wrong with customer to be deleted");
-            deleteError.showAndWait();
-            }
+                }}
         }
     }
 

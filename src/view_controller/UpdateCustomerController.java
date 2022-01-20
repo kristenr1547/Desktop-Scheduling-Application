@@ -12,6 +12,7 @@ import model.Country;
 import model.Customer;
 import model.FirstLevelDiv;
 import query.CountryQuery;
+import query.CustomerQuery;
 
 import java.io.IOException;
 import java.net.URL;
@@ -25,6 +26,9 @@ public class UpdateCustomerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         countryCombo.setItems(CountryQuery.getAllCountries());
+        countryCombo.getSelectionModel().select(updateCustomer.getCountry());
+        firstLevelDiv.setItems(getAllFirstLevelDiv(updateCustomer.getCountryId()));
+        firstLevelDiv.getSelectionModel().select(updateCustomer.getFld());
         customerIDTF.setDisable(true);
         customerIDTF.setText(String.valueOf(updateCustomer.getId()));
         nameTF.setText(String.valueOf(updateCustomer.getName()));
@@ -107,8 +111,67 @@ public class UpdateCustomerController implements Initializable {
         }
     }
 
-
-    public void onSave(ActionEvent actionEvent) {
-
+    private void clearErrorLabels(){
+        //error labels
+        fldError.setVisible(false);
+        countryError.setVisible(false);
+        postalErrorLbl.setVisible(false);
+        addressErrorLbl.setVisible(false);
+        phoneErrorLbl.setVisible(false);
+        nameErrorLbl.setVisible(false);
     }
-}
+
+    public void onSave(ActionEvent actionEvent) throws IOException {
+        clearErrorLabels();
+        //will create an insert into statement not a constructor for pojo object
+        String name = null;
+        String postal = null;
+        String phone = null;
+        String address = null;
+        int customerID = Integer.valueOf(customerIDTF.getText());
+        Country selectedCountry = (Country) countryCombo.getSelectionModel().getSelectedItem();
+        FirstLevelDiv selectedFirstLevelDiv = (FirstLevelDiv) firstLevelDiv.getSelectionModel().getSelectedItem();
+        int divId = 0;
+        boolean errorFound = false;
+
+        if(!nameTF.getText().isEmpty()){
+            name = nameTF.getText();
+        }else{
+            errorFound = true;
+            nameErrorLbl.setVisible(true);
+        }
+        if(!addressTF.getText().isEmpty()){
+            address = addressTF.getText();
+        }else{
+            errorFound = true;
+            addressErrorLbl.setVisible(true);
+        }
+        if(!phoneTF.getText().isEmpty()){
+            phone = phoneTF.getText();
+        }else{
+            errorFound = true;
+            phoneErrorLbl.setVisible(true);
+        }
+        if(!postalTF.getText().isEmpty()){
+            postal = postalTF.getText();
+        }else{
+            errorFound = true;
+            postalErrorLbl.setVisible(true);
+        }
+        if(selectedCountry == null){
+            errorFound = true;
+            countryError.setVisible(true);
+        }
+        if(selectedFirstLevelDiv == null){
+            errorFound = true;
+            fldError.setVisible(true);
+        }else{
+            divId = selectedFirstLevelDiv.getDivID();
+        }
+
+
+        if(!errorFound){
+            //update set where(String name, String address, String postal, String phone, int divID)
+            CustomerQuery.updateCustomer(name, address,postal,phone,divId,customerID);
+    }
+}}

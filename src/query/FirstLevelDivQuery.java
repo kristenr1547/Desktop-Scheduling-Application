@@ -11,10 +11,10 @@ public class FirstLevelDivQuery {
     private static Statement mystmt = null;
     private static PreparedStatement ps = null;
     private static ResultSet result = null;
-    private static ObservableList<FirstLevelDiv> allFirstLvlDivforCountry = FXCollections.observableArrayList();
 
   //to be used in add and update customer table and country class
     public static ObservableList<FirstLevelDiv> getAllFirstLevelDiv(int countryID){
+        ObservableList<FirstLevelDiv> allFirstLvlDivforCountry = FXCollections.observableArrayList();
         try{
             ps = conn.prepareStatement("SELECT * FROM first_level_divisions WHERE Country_ID = ?");
             ps.setInt(1, countryID);

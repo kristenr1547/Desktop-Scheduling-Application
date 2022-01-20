@@ -76,7 +76,7 @@
         </Label>
         <HBox alignment="CENTER" prefHeight="270.0" prefWidth="963.0">
             <children>
-                <TableView prefHeight="248.0" prefWidth="817.0">
+                <TableView fx:id="appointmentTable" prefHeight="248.0" prefWidth="817.0">
                     <columns>
                         <TableColumn fx:id="apptIdCol" prefWidth="35.20001143217087" text="ID" />
                         <TableColumn fx:id="apptTitleCol" prefWidth="66.40002822875977" text="Title" />

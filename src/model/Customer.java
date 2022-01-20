@@ -27,6 +27,18 @@ public class Customer {
         country = CountryQuery.createCountry(countryId); //queries db to find matching id for country
     }
 
+    public FirstLevelDiv getFld() {
+        return fld;
+    }
+
+    public int getCountryId() {
+        return countryId;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
     public int getId() {
         return id;
     }
@@ -73,5 +85,10 @@ public class Customer {
 
     public void setDivisionId(int divisionId) {
         this.divisionId = divisionId;
+    }
+
+    @Override
+    public String toString() {
+        return id + " " + name;
     }
 }
