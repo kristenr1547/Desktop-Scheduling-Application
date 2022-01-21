@@ -26,7 +26,7 @@ public class CustomerQuery {
                 }
             return allCustomers;
         }catch (SQLException e){
-            //nothing for now
+            e.printStackTrace();
         }
         return null;
     }

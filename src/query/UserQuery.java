@@ -1,6 +1,8 @@
 package query;
 
 import helper.JDBC;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.User;
 
 import java.sql.Connection;
@@ -20,19 +22,34 @@ public class UserQuery {
             result = mystmt.executeQuery("select * from users");
             while(result.next()){
                 if(result.getString("User_Name").equals(username) && result.getString("Password").equals(password)){
-                    User u = new User(result.getInt("User_ID"), result.getString("User_Name"), result.getString("Password"));
-                    System.out.println(result.getString("User_Name"));
-                    System.out.println("you are logged in");
+                    User u = new User(result.getInt("User_ID"),
+                                      result.getString("User_Name"), result.getString("Password"));
                     return u;
                 }
-//                mystmt.close();
-//                conn.close();
         }
 
         }catch(Exception e){
-            //do nothing here
-
+            e.printStackTrace();
         } return null;
     }
+
+    public static ObservableList<User> getAllUsers(){
+        try{
+            ObservableList<User> allUsers = FXCollections.observableArrayList();
+            conn = JDBC.getConnection();
+            mystmt = conn.createStatement();
+            result = mystmt.executeQuery("select * from users");
+            while(result.next()){
+                    User u = new User(result.getInt("User_ID"), result.getString("User_Name"),
+                            result.getString("Password"));
+                    allUsers.add(u);
+            }
+            return allUsers;
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 }

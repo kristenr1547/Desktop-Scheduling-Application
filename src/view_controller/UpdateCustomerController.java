@@ -1,5 +1,6 @@
 package view_controller;
 
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,16 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Country;
-import model.Customer;
 import model.FirstLevelDiv;
 import query.CountryQuery;
-import query.CustomerQuery;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
+import query.CustomerQuery;
+import model.Customer;
 import static query.FirstLevelDivQuery.getAllFirstLevelDiv;
 
 public class UpdateCustomerController implements Initializable {
@@ -45,7 +44,6 @@ public class UpdateCustomerController implements Initializable {
     public static void setCustomer(Customer updateCustomer) {
         UpdateCustomerController.updateCustomer = updateCustomer;
     }
-
     private Stage stage;
     private Parent scene;
 
@@ -111,6 +109,7 @@ public class UpdateCustomerController implements Initializable {
         }
     }
 
+
     private void clearErrorLabels(){
         //error labels
         fldError.setVisible(false);
@@ -121,7 +120,7 @@ public class UpdateCustomerController implements Initializable {
         nameErrorLbl.setVisible(false);
     }
 
-    public void onSave(ActionEvent actionEvent) throws IOException {
+    public void onSave(ActionEvent event) throws IOException {
         clearErrorLabels();
         //will create an insert into statement not a constructor for pojo object
         String name = null;
@@ -173,5 +172,11 @@ public class UpdateCustomerController implements Initializable {
         if(!errorFound){
             //update set where(String name, String address, String postal, String phone, int divID)
             CustomerQuery.updateCustomer(name, address,postal,phone,divId,customerID);
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view_controller/dashboard.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+
     }
+
 }}

@@ -88,8 +88,11 @@ public class DashboardController implements Initializable {
     Parent scene;
 
     @FXML
-    void addAppt(ActionEvent event) {
-
+    void addAppt(ActionEvent event) throws IOException {
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view_controller/addAppointment.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
     @FXML

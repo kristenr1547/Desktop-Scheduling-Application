@@ -27,7 +27,14 @@ public class AppointmentQuery {
             return allAppointments;
         }catch (SQLException e){
             //nothing for now
+            e.printStackTrace();
         }
         return null;
     }
+
+    //prepared statements ? for times localdate time to timestamp to timestampof
+    //setTimeStamp ?, timestamp value
+    //key to keys
+    //15-30
+    //change vm to us time zones est / pst
 }
