@@ -32,6 +32,31 @@ public class AppointmentQuery {
         return null;
     }
 
+    public static void insertCustomer(String title, String description, String location, String type,
+                                      Timestamp start, Timestamp end,int customerID, int userID, int contactID){
+
+        String sqlInsert = "INSERT INTO appointments(Title, Description,Location,Type,Start,End,Customer_ID,User_ID,Contact_ID)"
+                             + "VALUES(?,?,?,?,?,?,?,?,?)";
+        try{
+            conn = JDBC.getConnection();
+            ps = conn.prepareStatement(sqlInsert);
+            ps.setString(1, title);
+            ps.setString(2, description);
+            ps.setString(3, location);
+            ps.setString(4, type);
+            ps.setTimestamp(5,start);
+            ps.setTimestamp(6,end);
+            ps.setInt(7,customerID);
+            ps.setInt(8,userID);
+            ps.setInt(9,contactID);
+            ps.executeUpdate();
+
+        }catch (SQLException e){
+            //
+            System.out.println("something went wrong with insert into appointment");
+        }
+    }
+
     //prepared statements ? for times localdate time to timestamp to timestampof
     //setTimeStamp ?, timestamp value
     //key to keys

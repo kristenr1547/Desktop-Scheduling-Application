@@ -1,5 +1,6 @@
 package view_controller;
 
+import helper.TimeUtility;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,13 +14,16 @@ import javafx.stage.Stage;
 import model.Contact;
 import model.Customer;
 import model.User;
+import query.AppointmentQuery;
 import query.ContactQuery;
 import query.CustomerQuery;
 import query.UserQuery;
-
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -32,19 +36,17 @@ public class AddAppointmentController implements Initializable {
         contactCombo.setItems(ContactQuery.getAllContacts());
         customerIDTF.setText("AUTO-GEN DISABLED");
         customerIDTF.setDisable(true);
-        timeIncrement.addAll("08:00", "08:30", "09:00","09:30","10:00", "10:30","11:00", "11:30","12:00", "12:30","13:00",
-                "13:30","14:00", "14:30","15:00", "15:30","16:00", "16:30","17:00", "17:30","18:00", "18:30","19:00", "19:30"
-                ,"20:00", "20:30","21:00", "21:30","22:00");
-        startTimeCombo.setItems(timeIncrement);
-        endTimeCombo.setItems(timeIncrement);
+        //8AM-10PM EASTERN BUT THE TIMES ARE SUPPOSTED TO BE LOCAL
+        //DON'T HARDCODE LIST HERE CALL A METHOD THAT CREATES AN OBSERVABLELIST BASED ON LOCAL TIME OF USER
+        startTimeCombo.setItems(TimeUtility.getStartTimes());
 
     }
-    ObservableList<String> timeIncrement = FXCollections.observableArrayList();
+
 
     @FXML
-    private ComboBox<String> startTimeCombo;
+    private ComboBox<LocalTime> startTimeCombo;
     @FXML
-    private ComboBox<String> endTimeCombo;
+    private ComboBox<LocalTime> endTimeCombo;
     @FXML
     private ComboBox<Contact> contactCombo;
     @FXML
@@ -133,7 +135,10 @@ public class AddAppointmentController implements Initializable {
 
     @FXML
     void onStartTimeSelection(ActionEvent event) {
-
+        LocalTime selectedTime = (LocalTime)startTimeCombo.getSelectionModel().getSelectedItem();
+        if(selectedTime != null){
+            endTimeCombo.setItems(TimeUtility.getEndTimes(selectedTime));
+        }
     }
 
     @FXML
@@ -172,8 +177,26 @@ public class AddAppointmentController implements Initializable {
         String location = locationTF.getText();
         String type = typeTF.getText();
         String title = titleTF.getText();
-        //fixme add start time and end time with validation
+        LocalTime lclStart= null;
+        LocalTime lclEnd=null;
+        LocalDateTime lclDateTimeStart= null;
+        LocalDateTime lclDateTimeEnd= null;
 
+
+
+
+        try{
+            lclStart=(LocalTime)startTimeCombo.getSelectionModel().getSelectedItem();
+        }catch (NullPointerException e){
+            startTimeEmptyErrorLbl.setVisible(true);
+            errorFound = true;
+        }
+        try{
+            lclEnd=(LocalTime) endTimeCombo.getSelectionModel().getSelectedItem();
+        }catch (NullPointerException e){
+            endTimeEmptyErrorLbl.setVisible(true);
+            errorFound = true;
+        }
 
       try{
           contact = contactCombo.getSelectionModel().getSelectedItem();
@@ -225,8 +248,14 @@ public class AddAppointmentController implements Initializable {
         }
 
         if(!errorFound){
-            //if no errors insert into db
-
+            //combines date picker with the times selected if there are no nulls selected
+            lclDateTimeStart = LocalDateTime.of(lclDate,lclStart);
+            lclDateTimeEnd = LocalDateTime.of(lclDate,lclEnd);
+            Timestamp timeStampStart = Timestamp.valueOf(lclDateTimeStart);
+            Timestamp timeStampEnd = Timestamp.valueOf(lclDateTimeEnd);
+            //insertCustomer(String title, String description, String location, String type,
+            //             Timestamp start, Timestamp end,int customerID, int userID, int contactID)
+            AppointmentQuery.insertCustomer(title,description,location,type,timeStampStart,timeStampEnd,customerID,userID,contactID);
             System.out.println(description +" "+ location+" "+title+" "+lclDate+" "+type);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view_controller/dashboard.fxml"));
