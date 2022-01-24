@@ -1,9 +1,12 @@
 package view_controller;
 
+import helper.TimeUtility;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.Appointment;
+import model.User;
 import query.UserQuery;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +14,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -31,9 +37,9 @@ public class LoginController implements Initializable {
 
             }
         }catch (MissingResourceException e){
-            //nothing for now
+            e.printStackTrace();
         }
-        identifiedZonelbl.setText(String.valueOf(Locale.getDefault()));
+        identifiedZonelbl.setText(String.valueOf(Locale.getDefault()) +" | " + ZoneId.systemDefault());
     }
 
     @FXML
@@ -65,8 +71,30 @@ public class LoginController implements Initializable {
     }
     @FXML
     void logOn(ActionEvent event) throws IOException {
-        if(UserQuery.verifyUser(userNameTF.getText(), passwordTF.getText()) != null){
-            System.out.println("logged in");
+
+        User currentUser = UserQuery.verifyUser(userNameTF.getText(), passwordTF.getText());
+        if( currentUser!= null){
+            Appointment appointment = TimeUtility.checkUserUpcomingAppointments(currentUser);
+            if(appointment!=null){
+                LocalTime apptTime = LocalTime.from(appointment.getStartTime());
+                LocalDate apptDate = LocalDate.from(appointment.getStartTime());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Appointment");
+                alert.setTitle("Appointment");
+                alert.setGraphic(null);
+                alert.setContentText("You have an appointment in 15 minutes. \n" +
+                        "ID: " + appointment.getApptID() + " " +
+                        "Date: " + apptDate + " Time: " + apptTime);
+                alert.showAndWait();
+            }else{
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Appointment");
+                alert.setTitle("Appointment");
+                alert.setGraphic(null);
+                alert.setContentText("You do not have an appointment in 15 minutes");
+                alert.showAndWait();
+            }
+            DashboardController.setCurrentuser(currentUser);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view_controller/dashboard.fxml"));
             stage.setScene(new Scene(scene));

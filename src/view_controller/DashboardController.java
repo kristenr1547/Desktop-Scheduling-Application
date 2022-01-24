@@ -1,6 +1,7 @@
 package view_controller;
 
 
+import helper.TimeUtility;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
 import model.Customer;
+import model.User;
 import query.AppointmentQuery;
 import query.CustomerQuery;
 import java.io.IOException;
@@ -47,6 +49,16 @@ public class DashboardController implements Initializable {
         apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
     }
+    private static User currentuser;
+
+    public static User getCurrentuser() {
+        return currentuser;
+    }
+
+    public static void setCurrentuser(User currentuser) {
+        DashboardController.currentuser = currentuser;
+    }
+
     @FXML
     private TableView<Appointment> appointmentTable;
     @FXML
@@ -105,7 +117,28 @@ public class DashboardController implements Initializable {
 
     @FXML
     void deleteAppt(ActionEvent event) {
-
+        Appointment selAppt = (Appointment) appointmentTable.getSelectionModel().getSelectedItem();
+        //if no appointment is selected
+        if(selAppt == null){
+            Alert noSelectionAlert = new Alert(Alert.AlertType.ERROR);
+            noSelectionAlert.setTitle("Appointment");
+            noSelectionAlert.setContentText("Please select an appointment to delete");
+            noSelectionAlert.showAndWait();
+        }else{
+            //if an appointment is selected code to be completed
+            Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            deleteAlert.setTitle("Delete Appointment");
+            deleteAlert.setContentText("Are you sure you want to delete the appointment?");
+            Optional<ButtonType> result = deleteAlert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK){
+                //if customer deletion is confirmed
+                if(AppointmentQuery.deleteAppointment(selAppt)){
+                    Alert deleteSuccess = new Alert(Alert.AlertType.INFORMATION);
+                    deleteSuccess.setTitle("Appointment");
+                    deleteSuccess.setContentText("Appointment was successfully deleted");
+                    deleteSuccess.showAndWait();
+                }}
+        }appointmentTable.setItems(AppointmentQuery.getAllAppointments());
     }
 
     @FXML

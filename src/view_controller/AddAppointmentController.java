@@ -246,17 +246,26 @@ public class AddAppointmentController implements Initializable {
             dateEmptyErrorLbl.setVisible(true);
             errorFound = true;
         }
+        if(lclDate != null && lclEnd != null && lclStart != null){
+            if(TimeUtility.apptAddVerification(lclDate, customerID, lclEnd,lclStart)){
+                //do nothing here
+            }else{
+                errorFound = true;
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setGraphic(null);
+                alert.setTitle("Time Conflict");
+                alert.setContentText("Contact is unavailable at the time desired, please select different appointment time.");
+                alert.showAndWait();
+            }
+        }
 
         if(!errorFound){
-            //combines date picker with the times selected if there are no nulls selected
+            //combines date picker with the times selected if there are no errors selected
             lclDateTimeStart = LocalDateTime.of(lclDate,lclStart);
             lclDateTimeEnd = LocalDateTime.of(lclDate,lclEnd);
             Timestamp timeStampStart = Timestamp.valueOf(lclDateTimeStart);
             Timestamp timeStampEnd = Timestamp.valueOf(lclDateTimeEnd);
-            //insertCustomer(String title, String description, String location, String type,
-            //             Timestamp start, Timestamp end,int customerID, int userID, int contactID)
-            AppointmentQuery.insertCustomer(title,description,location,type,timeStampStart,timeStampEnd,customerID,userID,contactID);
-            System.out.println(description +" "+ location+" "+title+" "+lclDate+" "+type);
+            AppointmentQuery.insertAppt(title,description,location,type,timeStampStart,timeStampEnd,customerID,userID,contactID);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view_controller/dashboard.fxml"));
             stage.setScene(new Scene(scene));
