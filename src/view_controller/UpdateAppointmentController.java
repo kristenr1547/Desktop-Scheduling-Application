@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Appointment;
 import model.Contact;
 import model.Customer;
 import model.User;
@@ -27,21 +28,42 @@ import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class AddAppointmentController implements Initializable {
+public class UpdateAppointmentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        customerIDCombo.setItems(CustomerQuery.getAllCustomers());
-        userIDCombo.setItems(UserQuery.getAllUsers());
-        contactCombo.setItems(ContactQuery.getAllContacts());
-        customerIDTF.setText("AUTO-GEN DISABLED");
+        customerIDTF.setText(String.valueOf(updateAppt.getApptID()));
         customerIDTF.setDisable(true);
-        //8AM-10PM EASTERN BUT THE TIMES ARE SUPPOSTED TO BE LOCAL
-        //DON'T HARDCODE LIST HERE CALL A METHOD THAT CREATES AN OBSERVABLELIST BASED ON LOCAL TIME OF USER
+
+        //combo box initialization
+        customerIDCombo.setItems(CustomerQuery.getAllCustomers());
+        customerIDCombo.getSelectionModel().select(updateAppt.getCustomer());
+        userIDCombo.setItems(UserQuery.getAllUsers());
+        userIDCombo.getSelectionModel().select(updateAppt.getUser());
+        contactCombo.setItems(ContactQuery.getAllContacts());
+        contactCombo.getSelectionModel().select(updateAppt.getContact());
         startTimeCombo.setItems(TimeUtility.getStartTimes());
+        startTimeCombo.getSelectionModel().select(LocalTime.from(updateAppt.getStartTime()));
+        endTimeCombo.setItems(TimeUtility.getEndTimes(LocalTime.from(updateAppt.getStartTime())));
+        endTimeCombo.getSelectionModel().select(LocalTime.from(updateAppt.getEndTime()));
+        //initializing text fields
+        titleTF.setText(updateAppt.getTitle());
+        descriptionTF.setText(updateAppt.getDescription());
+        typeTF.setText(updateAppt.getType());
+        locationTF.setText(updateAppt.getLocation());
+        datePicker.setValue(LocalDate.from(updateAppt.getStartTime()));
 
     }
 
+    private static Appointment updateAppt;
+
+    public static Appointment getUpdateAppt() {
+        return updateAppt;
+    }
+
+    public static void setUpdateAppt(Appointment updateAppt) {
+        UpdateAppointmentController.updateAppt = updateAppt;
+    }
 
     @FXML
     private ComboBox<LocalTime> startTimeCombo;
@@ -56,12 +78,6 @@ public class AddAppointmentController implements Initializable {
 
     private Stage stage;
     private Parent scene;
-
-    @FXML
-    private Button saveBtn;
-    @FXML
-    private Button cancelBtn;
-
 
     @FXML
     private TextField customerIDTF;
@@ -201,24 +217,24 @@ public class AddAppointmentController implements Initializable {
             errorFound = true;
         }
 
-      try{
-          contact = contactCombo.getSelectionModel().getSelectedItem();
-          contactID = contact.getContactID();
-      }catch (NullPointerException e){
-          contactErrorLbl.setVisible(true);
-          errorFound = true;
-      }
-      try{
+        try{
+            contact = contactCombo.getSelectionModel().getSelectedItem();
+            contactID = contact.getContactID();
+        }catch (NullPointerException e){
+            contactErrorLbl.setVisible(true);
+            errorFound = true;
+        }
+        try{
             customer = customerIDCombo.getSelectionModel().getSelectedItem();
             customerID = customer.getId();
-      }catch (NullPointerException e){
+        }catch (NullPointerException e){
             customerIDErrorLbl.setVisible(true);
             errorFound = true;
         }
-      try{
+        try{
             user = userIDCombo.getSelectionModel().getSelectedItem();
             userID = user.getUserId();
-      }catch (NullPointerException e){
+        }catch (NullPointerException e){
             userIDErrorLbl.setVisible(true);
             errorFound = true;
         }
@@ -250,7 +266,7 @@ public class AddAppointmentController implements Initializable {
             errorFound = true;
         }
         if(lclDate != null && lclEnd != null && lclStart != null){
-            if(TimeUtility.apptAddVerification(lclDate, customerID, lclEnd,lclStart)){
+            if(TimeUtility.apptUpdateVerification(lclDate, customerID, lclEnd,lclStart, updateAppt)){
                 //this branch is desired
             }else{
                 apptTimeLabel.setVisible(true);
@@ -264,7 +280,7 @@ public class AddAppointmentController implements Initializable {
             lclDateTimeEnd = LocalDateTime.of(lclDate,lclEnd);
             Timestamp timeStampStart = Timestamp.valueOf(lclDateTimeStart);
             Timestamp timeStampEnd = Timestamp.valueOf(lclDateTimeEnd);
-            AppointmentQuery.insertAppt(title,description,location,type,timeStampStart,timeStampEnd,customerID,userID,contactID);
+            AppointmentQuery.updateAppt(title,description,location,type,timeStampStart,timeStampEnd,customerID,userID,contactID,updateAppt.getApptID());
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view_controller/dashboard.fxml"));
             stage.setScene(new Scene(scene));

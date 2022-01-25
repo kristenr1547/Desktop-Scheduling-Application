@@ -87,7 +87,31 @@ public static boolean apptAddVerification(LocalDate datePicked, int customerID, 
 }
 
 
-
+    public static boolean apptUpdateVerification(LocalDate datePicked, int customerID, LocalTime desireStart, LocalTime desireEnd, Appointment appointment){
+        ArrayList<Appointment> addAppointmentList;
+        addAppointmentList = AppointmentQuery.validateUpdateAppointment(datePicked,customerID,appointment);
+        for(int i = 0; i < addAppointmentList.size(); i++){
+            Appointment appt = addAppointmentList.get(i);
+            LocalTime apptStart = LocalTime.from(appt.getStartTime());//previously added appointment start times
+            LocalTime apptEnd = LocalTime.from(appt.getEndTime());//previously added appointment end times
+            if(apptStart.isAfter(desireStart) && apptStart.isBefore(desireEnd)){ //if desired start time spans over another appointment
+                return false;
+            }
+            if(apptEnd.equals(desireEnd) || apptStart.equals(desireStart)){ //If the desired start is on the same start as another appointment or the end is equal to another's end
+                return false;
+            }
+            if(apptStart.isBefore(desireStart) && apptEnd.isAfter(desireEnd)){//if desired appointment is inside another appt
+                return false;
+            }
+            if(apptStart.isBefore(desireStart) && apptEnd.isAfter(desireStart)){
+                return false;
+            }
+            if(apptStart.isAfter(desireStart) && apptStart.isBefore(desireEnd)){
+                return false;
+            }
+        }
+        return true; //good to book the desired appointment
+    }
 
 
 

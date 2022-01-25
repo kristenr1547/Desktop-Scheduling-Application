@@ -1,5 +1,9 @@
 package model;
 
+import query.ContactQuery;
+import query.CustomerQuery;
+import query.UserQuery;
+
 import java.time.LocalDateTime;
 
 public class Appointment {
@@ -12,7 +16,10 @@ public class Appointment {
     private LocalDateTime endTime;
     private int customerID;
     private int contactID;
+    private Contact contact;
     private int userID;
+    private User user;
+    private Customer customer;
 
     public Appointment(int apptID, String title, String description, String location, String type, LocalDateTime startTime, LocalDateTime endTime,
                        int customerID, int contactID, int userID) {
@@ -26,6 +33,9 @@ public class Appointment {
         this.customerID = customerID;
         this.contactID = contactID;
         this.userID = userID;
+        this.contact = ContactQuery.createContactByID(contactID);
+        this.user = UserQuery.createUserByID(userID);
+        this.customer = CustomerQuery.createCustomerbyID(customerID);
     }
 
     public int getApptID() {
@@ -106,5 +116,17 @@ public class Appointment {
 
     public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 }

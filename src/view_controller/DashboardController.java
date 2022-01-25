@@ -170,7 +170,21 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    void updateAppt(ActionEvent event) {
+    void updateAppt(ActionEvent event) throws IOException{
+        Appointment sAppointment = (Appointment) appointmentTable.getSelectionModel().getSelectedItem();
+        //if no customer is selected
+        if(sAppointment == null){
+            Alert noSelectionAlert = new Alert(Alert.AlertType.ERROR);
+            noSelectionAlert.setTitle("Customer");
+            noSelectionAlert.setContentText("Please select a customer to update");
+            noSelectionAlert.showAndWait();
+        }else{
+            UpdateAppointmentController.setUpdateAppt(sAppointment);
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view_controller/updateAppointment.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
 
     }
 
