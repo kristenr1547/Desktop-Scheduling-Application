@@ -4,7 +4,10 @@ import query.ContactQuery;
 import query.CustomerQuery;
 import query.UserQuery;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Appointment {
     private int apptID;
@@ -20,6 +23,7 @@ public class Appointment {
     private int userID;
     private User user;
     private Customer customer;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy hh:mm");
 
     public Appointment(int apptID, String title, String description, String location, String type, LocalDateTime startTime, LocalDateTime endTime,
                        int customerID, int contactID, int userID) {
@@ -94,6 +98,7 @@ public class Appointment {
         this.endTime = endTime;
     }
 
+
     public int getCustomerID() {
         return customerID;
     }
@@ -128,5 +133,12 @@ public class Appointment {
 
     public Customer getCustomer() {
         return customer;
+    }
+
+    public String getAppointmentStart(){
+        return startTime.format(formatter);
+    }
+    public String getAppointmentEnd(){
+        return endTime.format(formatter);
     }
 }

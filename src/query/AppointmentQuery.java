@@ -1,6 +1,8 @@
 package query;
 
 import helper.JDBC;
+import helper.MonthlyView;
+import helper.WeeklyView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
@@ -22,16 +24,71 @@ public class AppointmentQuery {
             mystmt = conn.createStatement();
             result = mystmt.executeQuery("select * from appointments");
             while(result.next()){
-                Appointment a = new Appointment(result.getInt("Appointment_ID"), result.getString("Title"), result.getString("Description"), result.getString("Location"), result.getString("Type"), result.getTimestamp("Start").toLocalDateTime(),result.getTimestamp("End").toLocalDateTime(), result.getInt("Customer_ID"), result.getInt("Contact_ID"),result.getInt("User_ID"));
+                Appointment a = new Appointment(result.getInt("Appointment_ID"), result.getString("Title"),
+                        result.getString("Description"), result.getString("Location"), result.getString("Type"),
+                        result.getTimestamp("Start").toLocalDateTime(),result.getTimestamp("End").toLocalDateTime(),
+                        result.getInt("Customer_ID"), result.getInt("Contact_ID"),result.getInt("User_ID"));
                 allAppointments.add(a);
             }
             return allAppointments;
         }catch (SQLException e){
-            //nothing for now
             e.printStackTrace();
         }
         return null;
     }
+
+
+    public static ObservableList<Appointment> getAllAppointmentsMonthly(){
+        ObservableList<Appointment> allAppointmentsMonth = FXCollections.observableArrayList();
+        try {
+            MonthlyView monthView = m -> m.plusMonths(1);
+            LocalDate lcldate = LocalDate.now();
+            LocalDate monthAway = monthView.addMonth(lcldate);
+            String sql = "select * from appointments WHERE CAST(Start AS DATE) >= ? AND CAST(Start AS DATE) <= ?";
+            ps = conn.prepareStatement(sql);
+            ps.setDate(1, Date.valueOf(lcldate));
+            ps.setDate(2, Date.valueOf(monthAway));
+            result = ps.executeQuery();
+            while(result.next()){
+                Appointment a = new Appointment(result.getInt("Appointment_ID"), result.getString("Title"),
+                        result.getString("Description"), result.getString("Location"),
+                        result.getString("Type"), result.getTimestamp("Start").toLocalDateTime(),
+                        result.getTimestamp("End").toLocalDateTime(), result.getInt("Customer_ID"),
+                        result.getInt("Contact_ID"),result.getInt("User_ID"));
+                allAppointmentsMonth.add(a);
+            }
+            return allAppointmentsMonth;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static ObservableList<Appointment> getAllAppointmentsWeek(){
+        ObservableList<Appointment> allAppointmentsWeekly = FXCollections.observableArrayList();
+        try {
+            WeeklyView weekView = n -> n.plusDays(6);
+            LocalDate lcldate = LocalDate.now();
+            LocalDate weekOut = weekView.addSix(lcldate);
+            String sql = "select * from appointments WHERE CAST(Start AS DATE) >= ? AND CAST(Start AS DATE) <= ?";
+            ps = conn.prepareStatement(sql);
+            ps.setDate(1, Date.valueOf(lcldate));
+            ps.setDate(2, Date.valueOf(weekOut));
+            result = ps.executeQuery();
+            while(result.next()){
+                Appointment a = new Appointment(result.getInt("Appointment_ID"), result.getString("Title"),
+                        result.getString("Description"),result.getString("Location"), result.getString("Type"),
+                        result.getTimestamp("Start").toLocalDateTime(), result.getTimestamp("End").toLocalDateTime(),
+                        result.getInt("Customer_ID"), result.getInt("Contact_ID"),result.getInt("User_ID"));
+                allAppointmentsWeekly.add(a);
+            }
+            return allAppointmentsWeekly;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 
     public static void insertAppt(String title, String description, String location, String type,
                                       Timestamp start, Timestamp end,int customerID, int userID, int contactID){
@@ -87,7 +144,11 @@ public class AppointmentQuery {
             ps.setInt(2,customerID);
             result = ps.executeQuery();
             while(result.next()){
-                Appointment a = new Appointment(result.getInt("Appointment_ID"), result.getString("Title"), result.getString("Description"), result.getString("Location"), result.getString("Type"), result.getTimestamp("Start").toLocalDateTime(),result.getTimestamp("End").toLocalDateTime(), result.getInt("Customer_ID"), result.getInt("Contact_ID"),result.getInt("User_ID"));
+                Appointment a = new Appointment(result.getInt("Appointment_ID"), result.getString("Title"),
+                        result.getString("Description"), result.getString("Location"),
+                        result.getString("Type"), result.getTimestamp("Start").toLocalDateTime(),
+                        result.getTimestamp("End").toLocalDateTime(), result.getInt("Customer_ID"),
+                        result.getInt("Contact_ID"),result.getInt("User_ID"));
                 allAppointmentsOnDate.add(a);
             }
             return allAppointmentsOnDate;
@@ -123,7 +184,10 @@ public class AppointmentQuery {
             ps.setInt(2,customerID);
             result = ps.executeQuery();
             while(result.next()){
-                Appointment a = new Appointment(result.getInt("Appointment_ID"), result.getString("Title"), result.getString("Description"), result.getString("Location"), result.getString("Type"), result.getTimestamp("Start").toLocalDateTime(),result.getTimestamp("End").toLocalDateTime(), result.getInt("Customer_ID"), result.getInt("Contact_ID"),result.getInt("User_ID"));
+                Appointment a = new Appointment(result.getInt("Appointment_ID"), result.getString("Title"),
+                        result.getString("Description"), result.getString("Location"), result.getString("Type"),
+                        result.getTimestamp("Start").toLocalDateTime(),result.getTimestamp("End").toLocalDateTime(),
+                        result.getInt("Customer_ID"), result.getInt("Contact_ID"),result.getInt("User_ID"));
                 if(apptUpdated.getApptID() != a.getApptID())
                     allAppointmentsOnDate.add(a);
             }

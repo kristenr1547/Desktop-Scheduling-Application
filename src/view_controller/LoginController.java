@@ -31,8 +31,8 @@ public class LoginController implements Initializable {
             if(Locale.getDefault().getLanguage().equals("fr")){
                 loginButton.setText(rb.getString("LOGINBTN"));
                 loginLabel.setText(rb.getString("LOGINLBL"));
-                passwordTF.setText(rb.getString("PASSWORD"));
-                userNameTF.setText(rb.getString("USERNAME"));
+                passwordTF.setPromptText(rb.getString("PASSWORD"));
+                userNameTF.setPromptText(rb.getString("USERNAME"));
                 zoneIDLabel.setText(rb.getString("ZONEID"));
 
             }
@@ -79,19 +79,22 @@ public class LoginController implements Initializable {
                 LocalTime apptTime = LocalTime.from(appointment.getStartTime());
                 LocalDate apptDate = LocalDate.from(appointment.getStartTime());
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("Appointment");
-                alert.setTitle("Appointment");
+                alert.setHeaderText(rb.getString("appointmentTitle"));
+                alert.setTitle(rb.getString("appointmentTitle"));
                 alert.setGraphic(null);
-                alert.setContentText("You have an appointment in 15 minutes. \n" +
-                        "ID: " + appointment.getApptID() + " " +
-                        "Date: " + apptDate + " Time: " + apptTime);
+
+                alert.setContentText(rb.getString("appointmentInFifteen") + "\n" +
+                        rb.getString("id") + ": " + appointment.getApptID() + " " +
+                        //date is the exact same in french and english.
+                        "Date: " + apptDate +  rb.getString("apptTime")+ ": " + apptTime);
+
                 alert.showAndWait();
             }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("Appointment");
-                alert.setTitle("Appointment");
+                alert.setHeaderText(rb.getString("appointmentTitle"));
+                alert.setTitle(rb.getString("appointmentTitle"));
                 alert.setGraphic(null);
-                alert.setContentText("You do not have an appointment in 15 minutes");
+                alert.setContentText(rb.getString("noApointment"));
                 alert.showAndWait();
             }
             DashboardController.setCurrentuser(currentUser);

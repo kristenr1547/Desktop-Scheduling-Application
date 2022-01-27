@@ -1,7 +1,7 @@
 package view_controller;
 
 
-import helper.TimeUtility;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
-import model.Contact;
 import model.Customer;
 import model.User;
 import query.AppointmentQuery;
@@ -29,6 +28,7 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        allAppointmentsRadio.setSelected(true);
         customerTable.setItems(CustomerQuery.getAllCustomers()); //queries db to create customer objects and add them to ObservableList
         custIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         custNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -41,10 +41,10 @@ public class DashboardController implements Initializable {
         apptContactCol.setCellValueFactory(new PropertyValueFactory<>("contactID"));
         apptCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
-        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("endTime"));
+        apptEndCol.setCellValueFactory(new PropertyValueFactory<>("appointmentEnd"));
         apptIdCol.setCellValueFactory(new PropertyValueFactory<>("apptID"));
         apptLocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
-        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+        apptStartCol.setCellValueFactory(new PropertyValueFactory<>("appointmentStart"));
         apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
@@ -58,6 +58,15 @@ public class DashboardController implements Initializable {
     public static void setCurrentuser(User currentuser) {
         DashboardController.currentuser = currentuser;
     }
+//toggle group for viewing appointments desired
+    @FXML
+    private RadioButton allAppointmentsRadio;
+    @FXML
+    private RadioButton weeklyAppointmentsRadio;
+    @FXML
+    private RadioButton monthlyAppointmentsRadio;
+    @FXML
+    private ToggleGroup appointmentView;
 
     @FXML
     private TableView<Appointment> appointmentTable;
@@ -68,13 +77,13 @@ public class DashboardController implements Initializable {
     @FXML
     private TableColumn<Appointment, String> apptDescriptionCol;
     @FXML
-    private TableColumn<Appointment, LocalDateTime> apptEndCol;
+    private TableColumn<Appointment, String> apptEndCol;
     @FXML
     private TableColumn<Appointment, Integer> apptIdCol;
     @FXML
     private TableColumn<Appointment, String> apptLocationCol;
     @FXML
-    private TableColumn<Appointment, LocalDateTime> apptStartCol;
+    private TableColumn<Appointment, String> apptStartCol;
     @FXML
     private TableColumn<Appointment, String> apptTitleCol;
     @FXML
@@ -98,6 +107,22 @@ public class DashboardController implements Initializable {
 
     Stage stage;
     Parent scene;
+
+    @FXML
+    void allAppointmentSelected(ActionEvent event) {
+        appointmentTable.setItems(AppointmentQuery.getAllAppointments());
+    }
+    @FXML
+    void weeklyAppointmentSelected(ActionEvent event) {
+        appointmentTable.setItems(AppointmentQuery.getAllAppointmentsWeek());
+
+    }
+    @FXML
+    void monthlyAppointmentSelected(ActionEvent event) {
+        appointmentTable.setItems(AppointmentQuery.getAllAppointmentsMonthly());
+
+
+    }
 
     @FXML
     void addAppt(ActionEvent event) throws IOException {

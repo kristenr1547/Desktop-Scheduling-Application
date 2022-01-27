@@ -4,16 +4,17 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="728.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view_controller.DashboardController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view_controller.DashboardController">
     <children>
-        <HBox alignment="TOP_CENTER" prefHeight="53.0" prefWidth="1000.0" style="-fx-background-color: darkslategrey;">
+        <HBox alignment="TOP_CENTER" prefHeight="8.0" prefWidth="900.0" style="-fx-background-color: darkslategrey;">
             <children>
                 <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="45.0" prefWidth="137.0" text="DASHBOARD" textAlignment="CENTER" textFill="WHITE">
                     <font>
@@ -32,10 +33,13 @@
             <font>
                 <Font size="17.0" />
             </font>
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
         </Label>
         <HBox alignment="CENTER" prefHeight="238.0" prefWidth="985.0">
             <children>
-                <TableView fx:id="customerTable" prefHeight="235.0" prefWidth="712.0">
+                <TableView fx:id="customerTable" prefHeight="236.0" prefWidth="697.0">
                     <columns>
                         <TableColumn fx:id="custIDCol" prefWidth="77.60000610351562" text="Customer ID" />
                         <TableColumn fx:id="custNameCol" prefWidth="113.59999084472656" text="Name" />
@@ -47,7 +51,7 @@
                 </TableView>
             </children>
         </HBox>
-        <HBox alignment="CENTER" prefHeight="34.0" prefWidth="1000.0">
+        <HBox alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="809.0">
             <children>
                 <Button fx:id="custAddBtn" mnemonicParsing="false" onAction="#addCustomer" text="ADD">
                     <HBox.margin>
@@ -66,7 +70,7 @@
                 </Button>
             </children>
             <VBox.margin>
-                <Insets left="10.0" right="10.0" top="5.0" />
+                <Insets right="100.0" top="5.0" />
             </VBox.margin>
         </HBox>
         <Label text="Appointments">
@@ -76,7 +80,7 @@
         </Label>
         <HBox alignment="CENTER" prefHeight="270.0" prefWidth="963.0">
             <children>
-                <TableView fx:id="appointmentTable" prefHeight="248.0" prefWidth="817.0">
+                <TableView fx:id="appointmentTable" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="200.0" prefWidth="692.0">
                     <columns>
                         <TableColumn fx:id="apptIdCol" prefWidth="35.20001143217087" text="ID" />
                         <TableColumn fx:id="apptTitleCol" prefWidth="66.40002822875977" text="Title" />
@@ -84,17 +88,38 @@
                         <TableColumn fx:id="apptLocationCol" prefWidth="69.5999755859375" text="Location" />
                         <TableColumn fx:id="apptContactCol" prefWidth="113.60003662109375" text="Contact" />
                         <TableColumn fx:id="apptTypeCol" prefWidth="60.0" text="Type" />
-                        <TableColumn fx:id="apptStartCol" prefWidth="75.99993896484375" text="Start" />
-                        <TableColumn fx:id="apptEndCol" prefWidth="79.2000732421875" text="End" />
-                        <TableColumn fx:id="apptCustomerIDCol" prefWidth="91.1998291015625" text="Customer ID" />
-                        <TableColumn fx:id="apptUserIDCol" prefWidth="63.2001953125" text="User ID" />
+                        <TableColumn fx:id="apptStartCol" prefWidth="113.0" text="Start" />
+                        <TableColumn fx:id="apptEndCol" prefWidth="114.0" text="End" />
+                        <TableColumn fx:id="apptCustomerIDCol" prefWidth="43.0" text="Customer ID" />
+                        <TableColumn fx:id="apptUserIDCol" minWidth="0.0" prefWidth="42.0" text="User ID" />
                     </columns>
                 </TableView>
             </children>
         </HBox>
-        <HBox alignment="CENTER" layoutX="10.0" layoutY="290.0" prefHeight="34.0" prefWidth="1000.0">
+        <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="290.0" prefHeight="34.0" prefWidth="1000.0">
             <children>
-                <Button fx:id="apptAddBtn" mnemonicParsing="false" onAction="#addAppt" text="ADD" />
+            <RadioButton fx:id="allAppointmentsRadio" mnemonicParsing="false" onAction="#allAppointmentSelected" text="All  Appointments">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+               <toggleGroup>
+                  <ToggleGroup fx:id="appointmentView" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="weeklyAppointmentsRadio" mnemonicParsing="false" onAction="#weeklyAppointmentSelected" text="Week View" toggleGroup="$appointmentView">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </RadioButton>
+            <RadioButton fx:id="monthlyAppointmentsRadio" mnemonicParsing="false" onAction="#monthlyAppointmentSelected" text="Month View" toggleGroup="$appointmentView">
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
+            </RadioButton>
+                <Button fx:id="apptAddBtn" mnemonicParsing="false" onAction="#addAppt" text="ADD">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin></Button>
                 <Button fx:id="apptUpdateBtn" mnemonicParsing="false" onAction="#updateAppt" text="UPDATE">
                     <HBox.margin>
                         <Insets left="10.0" right="10.0" />
@@ -105,10 +130,12 @@
             <VBox.margin>
                 <Insets top="5.0" />
             </VBox.margin>
+         <padding>
+            <Insets right="100.0" />
+         </padding>
         </HBox>
     </children>
     <cursor>
         <Cursor fx:constant="DEFAULT" />
     </cursor>
 </VBox>
-
