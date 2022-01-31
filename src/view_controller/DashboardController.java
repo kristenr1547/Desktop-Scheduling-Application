@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.Contact;
 import model.Customer;
 import model.User;
 import query.AppointmentQuery;
@@ -38,7 +39,7 @@ public class DashboardController implements Initializable {
         custDivIDCol.setCellValueFactory(new PropertyValueFactory<>("divisionId"));
         //setting up appointment table with all appointments
         appointmentTable.setItems(AppointmentQuery.getAllAppointments());
-        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("contact"));
         apptCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         apptDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         apptEndCol.setCellValueFactory(new PropertyValueFactory<>("appointmentEnd"));
@@ -51,27 +52,17 @@ public class DashboardController implements Initializable {
     }
     private static User currentuser;
 
-    public static User getCurrentuser() {
-        return currentuser;
-    }
-
     public static void setCurrentuser(User currentuser) {
         DashboardController.currentuser = currentuser;
     }
 //toggle group for viewing appointments desired
     @FXML
     private RadioButton allAppointmentsRadio;
-    @FXML
-    private RadioButton weeklyAppointmentsRadio;
-    @FXML
-    private RadioButton monthlyAppointmentsRadio;
-    @FXML
-    private ToggleGroup appointmentView;
 
     @FXML
     private TableView<Appointment> appointmentTable;
     @FXML
-    private TableColumn<Appointment, Integer> apptContactCol;
+    private TableColumn<Appointment, Contact> apptContactCol;
     @FXML
     private TableColumn<Appointment, Integer> apptCustomerIDCol;
     @FXML
@@ -123,7 +114,13 @@ public class DashboardController implements Initializable {
 
 
     }
-
+    @FXML
+    void onReport(ActionEvent event) throws IOException{
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view_controller/report.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
     @FXML
     void addAppt(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -151,8 +148,11 @@ public class DashboardController implements Initializable {
             noSelectionAlert.showAndWait();
         }else{
             //if an appointment is selected code to be completed
+            int apptID = selAppt.getApptID();
+            String apptType = selAppt.getType();
             Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
             deleteAlert.setTitle("Delete Appointment");
+            deleteAlert.setGraphic(null);
             deleteAlert.setContentText("Are you sure you want to delete the appointment?");
             Optional<ButtonType> result = deleteAlert.showAndWait();
             if(result.isPresent() && result.get() == ButtonType.OK){
@@ -160,7 +160,9 @@ public class DashboardController implements Initializable {
                 if(AppointmentQuery.deleteAppointment(selAppt)){
                     Alert deleteSuccess = new Alert(Alert.AlertType.INFORMATION);
                     deleteSuccess.setTitle("Appointment");
-                    deleteSuccess.setContentText("Appointment was successfully deleted");
+                    deleteSuccess.setGraphic(null);
+                    deleteSuccess.setHeaderText("Appointment Deleted");
+                    deleteSuccess.setContentText("Appointment ID: "+apptID+ " Type: " + apptType+"was successfully deleted");
                     deleteSuccess.showAndWait();
                 }}
         }appointmentTable.setItems(AppointmentQuery.getAllAppointments());
@@ -173,23 +175,27 @@ public class DashboardController implements Initializable {
         if(sCustomer == null){
             Alert noSelectionAlert = new Alert(Alert.AlertType.ERROR);
             noSelectionAlert.setTitle("Customer");
+            noSelectionAlert.setGraphic(null);
             noSelectionAlert.setContentText("Please select a customer to delete");
             noSelectionAlert.showAndWait();
         }else{
             //if a customer is selected code to be completed
             Alert deleteAlert = new Alert(Alert.AlertType.CONFIRMATION);
             deleteAlert.setTitle("Delete Customer");
+            deleteAlert.setGraphic(null);
             deleteAlert.setContentText("Are you sure you want to delete the customer? This will delete all appointments associated with customer.");
             Optional<ButtonType> result = deleteAlert.showAndWait();
             if(result.isPresent() && result.get() == ButtonType.OK){
                 //if customer deletion is confirmed
                 if(CustomerQuery.deleteCustomer(sCustomer)){
-                    //fixme add code to remove associated appointments here
+                    //database automatically deletes all appointments associated with customer code below resets appointment table
                     Alert deleteSuccess = new Alert(Alert.AlertType.INFORMATION);
+                    deleteSuccess.setGraphic(null);
                     deleteSuccess.setTitle("Customer");
                     deleteSuccess.setContentText("Customer was successfully deleted");
                     deleteSuccess.showAndWait();
                     customerTable.setItems(CustomerQuery.getAllCustomers());
+                    appointmentTable.setItems(AppointmentQuery.getAllAppointments());
                 }}
         }
     }

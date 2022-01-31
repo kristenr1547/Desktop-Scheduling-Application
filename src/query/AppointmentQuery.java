@@ -221,5 +221,107 @@ public class AppointmentQuery {
             System.out.println("something went wrong with insert into appointment");
         }
     }
+    public static ObservableList<String>  returnTypeReport(int customerID){
+        ObservableList<String> typeReport = FXCollections.observableArrayList();
+        try {
+            String sql = "SELECT COUNT(Appointment_ID), " +
+                    "Type FROM appointments WHERE Customer_ID = ? GROUP BY Type";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1,customerID);
+            result = ps.executeQuery();
+            while(result.next()){
+                String type=result.getString("Type");
+                int numOfType=result.getInt(1);
+                String statistic = type + ": " + numOfType;
+                typeReport.add(statistic);
+            }
+            return typeReport;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static ObservableList<Appointment>  contactSchedule(int contactID){
+        ObservableList<Appointment> contactSchedule = FXCollections.observableArrayList();
+        try {
+            String sql = "SELECT *" +
+                    "FROM appointments WHERE Contact_ID = ? " +
+                    "ORDER BY Start";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1,contactID);
+            result = ps.executeQuery();
+            while(result.next()){
+                Appointment a = new Appointment(result.getInt("Appointment_ID"), result.getString("Title"),
+                        result.getString("Description"), result.getString("Location"), result.getString("Type"),
+                        result.getTimestamp("Start").toLocalDateTime(),result.getTimestamp("End").toLocalDateTime(),
+                        result.getInt("Customer_ID"), result.getInt("Contact_ID"),result.getInt("User_ID"));
+                contactSchedule.add(a);
+            }
+            return contactSchedule;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static ObservableList<String>  returnMonthReport(int customerID){
+        ObservableList<String> monthReport = FXCollections.observableArrayList();
+        try {
+            String sql = "SELECT COUNT(Appointment_ID), month(Start) " +
+                    "FROM appointments WHERE Customer_ID = ? GROUP BY month(Start) ORDER BY month(Start)";
+            ps = conn.prepareStatement(sql);
+            ps.setInt(1,customerID);
+            result = ps.executeQuery();
+            while(result.next()){
+                int monthCount=result.getInt(1);
+                int monthNum=result.getInt(2);
+                String monthName = "";
+                switch (monthNum){
+                    case 1:
+                        monthName = "January";
+                        break;
+                    case 2:
+                        monthName = "February";
+                        break;
+                    case 3:
+                        monthName = "March";
+                        break;
+                    case 4:
+                        monthName = "April";
+                        break;
+                    case 5:
+                        monthName = "May";
+                        break;
+                    case 6:
+                        monthName = "June";
+                        break;
+                    case 7:
+                        monthName = "July";
+                        break;
+                    case 8:
+                        monthName = "August";
+                        break;
+                    case 9:
+                        monthName = "September";
+                        break;
+                    case 10:
+                        monthName = "October";
+                        break;
+                    case 11:
+                        monthName = "November";
+                        break;
+                    case 12:
+                        monthName = "December";
+                        break;
+                }
+                String statistic = monthName + ": " + monthCount;
+                System.out.println(statistic);
+                monthReport.add(statistic);
+            }
+            return monthReport;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

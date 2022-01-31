@@ -12,15 +12,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
+import java.io.*;
 
 public class LoginController implements Initializable {
     ResourceBundle rb;
@@ -68,12 +73,20 @@ public class LoginController implements Initializable {
         incorrectLogin.setTitle(rb.getString("alertTitle"));
         incorrectLogin.setHeaderText(rb.getString("alertHeader"));
         incorrectLogin.showAndWait();
+        incorrectLogin.setGraphic(null);
     }
+
     @FXML
     void logOn(ActionEvent event) throws IOException {
-
+        Timestamp time = Timestamp.valueOf(LocalDateTime.now());
+        String fileName = "login_activity.txt";
+        FileWriter fw = new FileWriter(fileName,true);
+        PrintWriter pw = new PrintWriter(fw);
         User currentUser = UserQuery.verifyUser(userNameTF.getText(), passwordTF.getText());
         if( currentUser!= null){
+                pw.println("Successful login USERNAME ENTERED: " + currentUser.getUserName() + " TimeStamp: " + time);
+                pw.close();
+
             Appointment appointment = TimeUtility.checkUserUpcomingAppointments(currentUser);
             if(appointment!=null){
                 LocalTime apptTime = LocalTime.from(appointment.getStartTime());
@@ -105,6 +118,9 @@ public class LoginController implements Initializable {
 
         }else{
             alertUser();
+            pw.println("Unsuccessful login USERNAME ENTERED: "+userNameTF.getText() + " TimeStamp: " + time);
+            pw.close();
+
         }
 
 

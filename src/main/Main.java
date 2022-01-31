@@ -7,7 +7,11 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import helper.JDBC;
 import model.FirstLevelDiv;
+import query.AppointmentQuery;
+import query.CustomerQuery;
 import query.FirstLevelDivQuery;
+import view_controller.ReportController;
+
 import java.sql.SQLException;
 import java.util.Locale;
 

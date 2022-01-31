@@ -41,6 +41,7 @@ ObservableList<LocalTime> endTimes = FXCollections.observableArrayList();
         userStartSelect = userStartSelect.plusMinutes(30);
         endTimes.add(userStartSelect);
     }
+    endTimes.add(LocalTime.from(usersLocalEnd));
     return endTimes;
 }
 
@@ -117,5 +118,4 @@ public static boolean apptAddVerification(LocalDate datePicked, int customerID, 
 
 
 }
-//endtimes.add(usersLoalStart.toLocalTime());
-//need another method the same way and call it getEndtimes always call getStartTime first
+

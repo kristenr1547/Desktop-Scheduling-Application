@@ -66,7 +66,7 @@ public class UserQuery {
             return user;
 
         }catch (SQLException e){
-            System.out.println(" error in create userbyid");
+            e.printStackTrace();
             return null;
         } }
 

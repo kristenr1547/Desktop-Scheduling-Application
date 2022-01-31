@@ -61,11 +61,9 @@ public static boolean deleteCustomer(Customer c){
             ps.setString(4, phone);
             ps.setInt(5,divID);
             ps.executeUpdate();
-            System.out.println("customer insert ran");
 
         }catch (SQLException e){
-            //
-            System.out.println("something went wrong with insert into customers");
+            e.printStackTrace();
         }
     }
     public static void updateCustomer(String name, String address, String postal, String phone, int divID, int customerID){
@@ -83,9 +81,7 @@ public static boolean deleteCustomer(Customer c){
             System.out.println("customer update ran");
 
         }catch (SQLException e){
-            //
-            System.out.println("something went wrong with update in customers /n"
-            + e);
+            e.printStackTrace();
         }
     }
 
@@ -112,10 +108,30 @@ public static boolean deleteCustomer(Customer c){
             return customer;
 
         }catch (SQLException e){
-            System.out.println(" error in create contactByID");
+            e.printStackTrace();
             return null;
         } }
 
+    public static ObservableList<String> customersPerCountry(){
+        ObservableList<String> customersInCountry = FXCollections.observableArrayList();
+        try {
+            String sql = "SELECT COUNT(customers.Customer_ID), countries.Country FROM" +
+                    " customers INNER JOIN first_level_divisions ON" +
+                    " customers.Division_ID = first_level_divisions.Division_ID INNER JOIN"+
+                    " countries ON first_level_divisions.Country_ID = countries.Country_ID"+
+                    " GROUP BY countries.Country";
+            ps = conn.prepareStatement(sql);
+            result = ps.executeQuery();
+            while(result.next()){
+                String stat = result.getString(2) + " " +result.getString(1);
+                customersInCountry.add(stat);
+            }
+            return customersInCountry;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 }

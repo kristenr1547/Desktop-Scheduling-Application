@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view_controller.DashboardController">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="view_controller.DashboardController">
     <children>
         <HBox alignment="TOP_CENTER" prefHeight="8.0" prefWidth="900.0" style="-fx-background-color: darkslategrey;">
             <children>
@@ -116,6 +116,7 @@
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </RadioButton>
+            <Button fx:id="reportButton" mnemonicParsing="false" onAction="#onReport" text="Reports" />
                 <Button fx:id="apptAddBtn" mnemonicParsing="false" onAction="#addAppt" text="ADD">
                <HBox.margin>
                   <Insets left="10.0" />
