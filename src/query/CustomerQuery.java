@@ -3,11 +3,13 @@ package query;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Contact;
 import model.Customer;
 import java.sql.PreparedStatement;
 import java.sql.*;
 
+/**
+ * Class that queries the customer table.
+ */
 public class CustomerQuery {
 
     private static Connection conn = JDBC.getConnection();;
@@ -15,6 +17,10 @@ public class CustomerQuery {
     private static PreparedStatement ps = null;
     private static ResultSet result = null;
 
+    /**
+     *
+     * @return List of all customers in the database.
+     */
     public static ObservableList<Customer> getAllCustomers(){
         ObservableList<Customer> allCustomers = FXCollections.observableArrayList();
         try {
@@ -31,8 +37,12 @@ public class CustomerQuery {
         return null;
     }
 
-
-public static boolean deleteCustomer(Customer c){
+    /**
+     *
+     * @param c customer desired to be deleted
+     * @return true if the customer was deleted successfully.
+     */
+    public static boolean deleteCustomer(Customer c){
         int id = c.getId();
         String sqlDelete = "DELETE FROM customers WHERE Customer_ID = ?";
         try{
@@ -49,6 +59,15 @@ public static boolean deleteCustomer(Customer c){
         }
         return false;
 }
+
+    /**
+     * Inserts a new customer into the database.
+     * @param name new customer name.
+     * @param address new customer address.
+     * @param postal new customer postal code.
+     * @param phone new customer phone number.
+     * @param divID new customer Division_ID.
+     */
     public static void insertCustomer(String name, String address, String postal, String phone, int divID){
 
         String sqlInsert = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Division_ID)" +
@@ -66,6 +85,11 @@ public static boolean deleteCustomer(Customer c){
             e.printStackTrace();
         }
     }
+
+    /**
+     *
+     *Updates the desired fields for a customer that is already in the database, does not allow the user to modify the customer's unique ID.
+     */
     public static void updateCustomer(String name, String address, String postal, String phone, int divID, int customerID){
 
         String sqlUpdate =  "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Division_ID = ? WHERE Customer_ID = ?";
@@ -85,6 +109,10 @@ public static boolean deleteCustomer(Customer c){
         }
     }
 
+    /**
+     *
+     * @return Creates a customer object from the customer's ID.
+     */
     public static Customer createCustomerbyID(int id){
         int customerID = 0;
         String customerName = null;
@@ -112,6 +140,10 @@ public static boolean deleteCustomer(Customer c){
             return null;
         } }
 
+    /**
+     *
+     * @return List that contains a count of how many customers are in each country.
+     */
     public static ObservableList<String> customersPerCountry(){
         ObservableList<String> customersInCountry = FXCollections.observableArrayList();
         try {

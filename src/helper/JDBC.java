@@ -1,8 +1,10 @@
 package helper;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/**
+ * Class that creates the connection to the MYSQL DATABASE.
+ */
 public class JDBC {
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";

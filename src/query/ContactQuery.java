@@ -4,11 +4,11 @@ import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Contact;
-import model.Customer;
-import model.FirstLevelDiv;
-
 import java.sql.*;
 
+/**
+ * Class that queries the contact table.
+ */
 public class ContactQuery {
 
     private static Connection conn = JDBC.getConnection();
@@ -16,6 +16,10 @@ public class ContactQuery {
     private static PreparedStatement ps = null;
     private static ResultSet result = null;
 
+    /**
+     *
+     * @return all contacts in the database.
+     */
     public static ObservableList<Contact> getAllContacts(){
         ObservableList<Contact> allContacts = FXCollections.observableArrayList();
         try {
@@ -31,6 +35,9 @@ public class ContactQuery {
             return null;
         }
     }
+    /**
+     *Creates a contact object by ID.
+     */
     public static Contact createContactByID(int id){
         int contactID = 0;
         String contactName = null;

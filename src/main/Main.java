@@ -15,7 +15,9 @@ import view_controller.ReportController;
 import java.sql.SQLException;
 import java.util.Locale;
 
-
+/**
+ * Class where the main method is located.
+ */
 public class Main extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -25,10 +27,9 @@ public class Main extends Application{
         primaryStage.show();
 
     }
+
     public static void main(String[] args) throws SQLException {
-	// write your code here
         JDBC.openConnection();
-//        Locale.setDefault(new Locale("fr"));
         launch(args);
         JDBC.closeConnection();
 

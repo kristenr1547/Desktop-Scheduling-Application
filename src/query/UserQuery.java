@@ -3,11 +3,12 @@ package query;
 import helper.JDBC;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Customer;
 import model.User;
-
 import java.sql.*;
 
+/**
+ * Class that queries the user table in the database to assist with authenticating into the program.
+ */
 public class UserQuery {
 
     private static Connection conn = JDBC.getConnection();
@@ -15,6 +16,12 @@ public class UserQuery {
     private static  ResultSet result = null;
     private static PreparedStatement ps = null;
 
+    /**
+     *
+     * @param username Username entered in the GUI.
+     * @param password Password that was entered into the GUI.
+     * @return Creates a user if the credentials match what is in the database.
+     */
     public static User verifyUser(String username, String password){
         try{
             mystmt = conn.createStatement();
@@ -32,6 +39,10 @@ public class UserQuery {
         } return null;
     }
 
+    /**
+     *
+     * @return List of all users in the database.
+     */
     public static ObservableList<User> getAllUsers(){
         try{
             ObservableList<User> allUsers = FXCollections.observableArrayList();
@@ -48,6 +59,10 @@ public class UserQuery {
             return null;
         }
     }
+
+    /**
+     * @return Creates a User object from the ID in the database.
+     */
     public static User createUserByID(int id){
         int userID = 0;
         String userName = null;

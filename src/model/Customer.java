@@ -3,6 +3,9 @@ package model;
 import query.CountryQuery;
 import query.FirstLevelDivQuery;
 
+/**
+ * Creates customer objects that are related to the customer table in the database.
+ */
 public class Customer {
     private int id;
     private String name;
@@ -14,7 +17,15 @@ public class Customer {
     private int countryId; //for selecting the country
     private Country country; //for using with the combobox
 
-//overloaded constructer when customers are added from db
+    /**
+     *
+     * @param id Unique customer identifier that is provided from the database.
+     * @param name customer's name.
+     * @param address customer's address.
+     * @param postal customer's postal code.
+     * @param phone customer's phone number.
+     * @param divisionId customer's divisionID that relates to the country table.
+     */
     public Customer(int id, String name, String address, String postal, String phone, int divisionId) {
         this.id = id;
         this.name = name;
@@ -87,6 +98,10 @@ public class Customer {
         this.divisionId = divisionId;
     }
 
+    /**
+     *
+     * @return Customer string that is to be displayed in a combobox.
+     */
     @Override
     public String toString() {
         return id + " " + name;

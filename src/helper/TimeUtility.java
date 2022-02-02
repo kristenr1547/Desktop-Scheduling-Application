@@ -10,11 +10,18 @@ import query.AppointmentQuery;
 import java.time.*;
 import java.util.ArrayList;
 
+/**
+ * Assists the program in converting timezones and validating that a requested appointment time is available.
+ */
 public class TimeUtility {
 //    private static ObservableList<LocalTime> startTimes = FXCollections.observableArrayList();
     private static LocalTime easternStartTime = LocalTime.of(8,0);
     private static LocalTime easternEndTime = LocalTime.of(22,0);
 
+    /**
+     *User is unable to select unauthorized appointment times outside of 08:00-22:00 EST.
+     * @return This Method returns the available start times in the users specific Locale.
+     */
     public static ObservableList<LocalTime> getStartTimes(){
         ObservableList<LocalTime> startTimes = FXCollections.observableArrayList();
         if(startTimes.size() == 0){
@@ -29,7 +36,10 @@ public class TimeUtility {
         }
         return startTimes;
     }
-
+    /**
+     * The user is unable to select times that are out of the specified times in EST.
+     * @return available end times in the users specific Locale.
+     */
 
 public static ObservableList<LocalTime> getEndTimes(LocalTime userStartSelect){
 ObservableList<LocalTime> endTimes = FXCollections.observableArrayList();
@@ -45,7 +55,11 @@ ObservableList<LocalTime> endTimes = FXCollections.observableArrayList();
     return endTimes;
 }
 
-public static Appointment checkUserUpcomingAppointments(User user){
+    /**
+     *
+     * @return If the user that is logged in has any upcoming appointments within 15 minutes.
+     */
+    public static Appointment checkUserUpcomingAppointments(User user){
         //get user appointments where userID
     ArrayList<Appointment> userAppointments;
     userAppointments = AppointmentQuery.getApptUserLogin(user);
@@ -61,7 +75,15 @@ public static Appointment checkUserUpcomingAppointments(User user){
        return null;
 }
 
-public static boolean apptAddVerification(LocalDate datePicked, int customerID, LocalTime desireStart, LocalTime desireEnd){
+    /**
+     *
+     * @param datePicked The day the user has selected for an appointment
+     * @param customerID The customerID that will be used in the appointment
+     * @param desireStart The desired start time for an appointment.
+     * @param desireEnd The desired end time for an appointment.
+     * @return True if the appointment is available or false if there are appointments already scheduled during the times requested.
+     */
+    public static boolean apptAddVerification(LocalDate datePicked, int customerID, LocalTime desireStart, LocalTime desireEnd){
         ArrayList<Appointment> addAppointmentList;
         addAppointmentList = AppointmentQuery.validateAddAppointment(datePicked,customerID);
         for(int i = 0; i < addAppointmentList.size(); i++){

@@ -1,18 +1,21 @@
 package model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import query.FirstLevelDivQuery;
+/**
+ * Class that describes the country objects that are described from the country table in the database.
+ */
 
 public class Country {
     private int countryID;
     private String countryName;
-//    private ObservableList<FirstLevelDiv> firstLvlDivs = FXCollections.observableArrayList();
 
+    /**
+     *
+     * @param countryID The unique country identifier that is assigned in the database.
+     * @param countryName The country's name.
+     */
     public Country(int countryID, String countryName) {
         this.countryID = countryID;
         this.countryName = countryName;
-//        firstLvlDivs = FirstLevelDivQuery.getAllFirstLevelDiv(countryID);
     }
 
     public int getCountryID() {
@@ -35,6 +38,10 @@ public class Country {
 //        return firstLvlDivs;
 //    }
 
+    /**
+     *
+     * @return Country information that is easier to comprehend and view in the combobox.
+     */
     @Override
     public String toString() {
         return "ID: " + getCountryID() + " " + getCountryName();

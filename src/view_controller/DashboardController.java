@@ -14,19 +14,21 @@ import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
 import model.Customer;
-import model.User;
 import query.AppointmentQuery;
 import query.CustomerQuery;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import static view_controller.UpdateCustomerController.setCustomer;
 
+/**
+ * Main Dashboard Controller
+ */
 public class DashboardController implements Initializable {
-
+    /**
+     *Initializes and populates the customer and appointment tables.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         allAppointmentsRadio.setSelected(true);
@@ -50,15 +52,15 @@ public class DashboardController implements Initializable {
         apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         apptUserIDCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
     }
-    private static User currentuser;
 
-    public static void setCurrentuser(User currentuser) {
-        DashboardController.currentuser = currentuser;
-    }
-//toggle group for viewing appointments desired
+    /**
+     * RadioButton if selected disiplays all appointments in tableview.
+     */
     @FXML
     private RadioButton allAppointmentsRadio;
-
+    /**
+     * Table that displays appointment information.
+     */
     @FXML
     private TableView<Appointment> appointmentTable;
     @FXML
@@ -93,26 +95,44 @@ public class DashboardController implements Initializable {
     private TableColumn<Customer, String> custPhoneCol;
     @FXML
     private TableColumn<Customer, String> custPostalCol;
+    /**
+     * Table that displays appointment information.
+     */
     @FXML
     private TableView<Customer> customerTable;
 
     Stage stage;
     Parent scene;
 
+    /**
+     *
+     * @param event User selects radiobutton to display all appointments in database.
+     */
     @FXML
     void allAppointmentSelected(ActionEvent event) {
         appointmentTable.setItems(AppointmentQuery.getAllAppointments());
     }
+
+    /**
+     *
+     * @param event User selects RadioButton to display all appointments within a week.
+     */
     @FXML
     void weeklyAppointmentSelected(ActionEvent event) {
         appointmentTable.setItems(AppointmentQuery.getAllAppointmentsWeek());
 
     }
+    /**
+     *
+     * @param event User selects RadioButton to display all appointments within a month.
+     */
     @FXML
     void monthlyAppointmentSelected(ActionEvent event) {
         appointmentTable.setItems(AppointmentQuery.getAllAppointmentsMonthly());
 
-
+/**
+ * User selects to go to the reports screen to view data from reports pulled.
+ */
     }
     @FXML
     void onReport(ActionEvent event) throws IOException{
@@ -121,6 +141,12 @@ public class DashboardController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
+
+    /**
+     * Takes user to add appointment screen.
+     * @param event User selects add appointment button.
+     * @throws IOException if screen in inaccessible.
+     */
     @FXML
     void addAppt(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -128,7 +154,11 @@ public class DashboardController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
+    /**
+     * Takes user to add customer screen.
+     * @param event User selects add customer button.
+     * @throws IOException if screen in inaccessible.
+     */
     @FXML
     void addCustomer(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -137,6 +167,10 @@ public class DashboardController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Will display an error if there are no appointments selected. It will display appointment information that is deleted successfully.
+     * @param event User selects delete appointment button.
+     */
     @FXML
     void deleteAppt(ActionEvent event) {
         Appointment selAppt = (Appointment) appointmentTable.getSelectionModel().getSelectedItem();
@@ -167,7 +201,12 @@ public class DashboardController implements Initializable {
                 }}
         }appointmentTable.setItems(AppointmentQuery.getAllAppointments());
     }
-
+    /**
+     * Will display an error if there are no customers selected. It will display customer information that is deleted successfully.
+     * It warns the user that deleting a customer will also delete all appointments, the database automatically deletes the appointments if the user
+     * still desires to delete the customer.
+     * @param event User selects delete customer button.
+     */
     @FXML
     void deleteCustomer(ActionEvent event) {
         Customer sCustomer = (Customer) customerTable.getSelectionModel().getSelectedItem();
@@ -200,6 +239,11 @@ public class DashboardController implements Initializable {
         }
     }
 
+    /**
+     * Will create an alert if there is not an appointment selected to be updated.
+     * @param event User selects update appointment information.
+     * @throws IOException if screen file is inaccessible.
+     */
     @FXML
     void updateAppt(ActionEvent event) throws IOException{
         Appointment sAppointment = (Appointment) appointmentTable.getSelectionModel().getSelectedItem();
@@ -218,7 +262,11 @@ public class DashboardController implements Initializable {
         }
 
     }
-
+    /**
+     * Will create an alert if there is not a customer selected to be updated.
+     * @param event User selects update customer information.
+     * @throws IOException if screen file is inaccessible.
+     */
     @FXML
     void updateCustomer(ActionEvent event) throws IOException {
         Customer sCustomer = (Customer) customerTable.getSelectionModel().getSelectedItem();

@@ -6,13 +6,19 @@ import javafx.collections.ObservableList;
 import model.Country;
 import java.sql.*;
 
+/**
+ * Class that queries the country table.
+ */
 public class CountryQuery {
     private static Connection conn = JDBC.getConnection();
     private static Statement mystmt = null;
     private static PreparedStatement ps = null;
     private static ResultSet result = null;
 
-    //for add and update customer combo
+    /**
+     *
+     * @return List of all countries.
+     */
     public static ObservableList<Country> getAllCountries(){
         ObservableList<Country> allCountries = FXCollections.observableArrayList();
         try{
@@ -28,6 +34,10 @@ public class CountryQuery {
         return allCountries;
     }
 
+    /**
+     *
+     * @return Country object by ID to be displayed in a combo box.
+     */
     public static Country createCountry(int countryID){
         try{
            ps= conn.prepareStatement("SELECT * FROM countries WHERE Country_ID = ?");

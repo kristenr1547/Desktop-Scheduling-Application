@@ -28,8 +28,14 @@ import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Class that updates an appointment based on what the user selects and enters into the text fields. Validates to ensure that there are no conflicts for a customer's schedule.
+ */
 public class UpdateAppointmentController implements Initializable {
-
+    /**
+     *Initializes the combo boxes for the user to select the specified options to update an appointment.
+     * Inserts the information into the fields and boxes that was entered prior that may be modified. The appointment ID cannot be changed.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         customerIDTF.setText(String.valueOf(updateAppt.getApptID()));
@@ -55,6 +61,9 @@ public class UpdateAppointmentController implements Initializable {
 
     }
 
+    /**
+     * Appointment that is passed from the dashboard to be modified.
+     */
     private static Appointment updateAppt;
 
     public static Appointment getUpdateAppt() {
@@ -65,14 +74,29 @@ public class UpdateAppointmentController implements Initializable {
         UpdateAppointmentController.updateAppt = updateAppt;
     }
 
+    /**
+     * Start times that are displayed in the users local time zone the options available do not allow customer to select times outside of the specified EST times allowed.
+     */
     @FXML
     private ComboBox<LocalTime> startTimeCombo;
+    /**
+     * End times that are displayed in the users local time zone the options available do not allow customer to select times outside of the specified EST times allowed.
+     */
     @FXML
     private ComboBox<LocalTime> endTimeCombo;
+    /**
+     * Displays all contacts available to be added to the appointment.
+     */
     @FXML
     private ComboBox<Contact> contactCombo;
+    /**
+     * All available customers to be added to the appointment.
+     */
     @FXML
     private ComboBox<Customer> customerIDCombo;
+    /**
+     * Displays all users available to add to the appointment.
+     */
     @FXML
     private ComboBox<User> userIDCombo;
 
@@ -116,6 +140,9 @@ public class UpdateAppointmentController implements Initializable {
     @FXML
     private Label apptTimeLabel;
 
+    /**
+     * Clears all error messages so the user is not confused if an error remains.
+     */
     private void clearErrorLabels(){
         locationErrorLbl.setVisible(false);
         dateEmptyErrorLbl.setVisible(false);
@@ -131,27 +158,10 @@ public class UpdateAppointmentController implements Initializable {
     }
 
 
-    @FXML
-    void onContactSelection(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onCustomerIDSelection(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onDateSelection(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onEndTimeSelection(ActionEvent event) {
-
-    }
-
-
+    /**
+     *
+     * @param event Start time is selected in the users local time. It creates a list of available end times for the end time combo box.
+     */
     @FXML
     void onStartTimeSelection(ActionEvent event) {
         LocalTime selectedTime = (LocalTime)startTimeCombo.getSelectionModel().getSelectedItem();
@@ -159,11 +169,12 @@ public class UpdateAppointmentController implements Initializable {
             endTimeCombo.setItems(TimeUtility.getEndTimes(selectedTime));
         }
     }
-
-    @FXML
-    void onUserIDSelection(ActionEvent event) {
-
-    }
+    /**
+     *
+     * @param event User selects the cancel button.
+     * Allows the user to stay on the page if they do not want to lose all of their information.
+     * @throws IOException if main dash file is not accessible.
+     */
 
     @FXML
     void onCancel(ActionEvent event) throws IOException {
@@ -180,7 +191,12 @@ public class UpdateAppointmentController implements Initializable {
         }
     }
 
-
+    /**
+     *
+     * Updates an appointment into the database if there are no errors found.
+     * @param event User selects the save button.
+     * @throws IOException if unable to go back to dashboard.
+     */
     @FXML
     void onSave(ActionEvent event) throws IOException {
         clearErrorLabels();

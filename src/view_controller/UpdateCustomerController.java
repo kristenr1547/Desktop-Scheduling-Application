@@ -20,8 +20,13 @@ import query.CustomerQuery;
 import model.Customer;
 import static query.FirstLevelDivQuery.getAllFirstLevelDiv;
 
+/**
+ * Class that controls the UpdateCustomer FXML document.
+ */
 public class UpdateCustomerController implements Initializable {
-
+    /**
+     *Sets up fields and Combo Boxes to display the appointment information that can be modified.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         countryCombo.setItems(CountryQuery.getAllCountries());
@@ -35,6 +40,10 @@ public class UpdateCustomerController implements Initializable {
         postalTF.setText(String.valueOf(updateCustomer.getPostal()));
         addressTF.setText(String.valueOf(updateCustomer.getAddress()));
     }
+
+    /**
+     * Customer that was passed from the dashboard into the controller.
+     */
     private static Customer updateCustomer;
 
     public static Customer getCustomer() {
@@ -51,9 +60,6 @@ public class UpdateCustomerController implements Initializable {
     private TextField addressTF;
 
     @FXML
-    private Button cancelBtn;
-
-    @FXML
     private TextField customerIDTF;
 
     @FXML
@@ -66,8 +72,6 @@ public class UpdateCustomerController implements Initializable {
     private TextField postalTF;
 
     @FXML
-    private Button saveBtn;
-    @FXML
     private Label nameErrorLbl;
     @FXML
     private Label phoneErrorLbl;
@@ -79,13 +83,21 @@ public class UpdateCustomerController implements Initializable {
     private Label countryError;
     @FXML
     private Label fldError;
-
+    /**
+     * Displays the countries in the database.
+     */
     @FXML
     private ComboBox<Country> countryCombo;
-
+    /**
+     * Displays the first level divisions that belong to the country selected.
+     */
     @FXML
     private ComboBox<FirstLevelDiv> firstLevelDiv;
 
+    /**
+     *
+     * @param event Sets the FirstLevelDiv Combo Box.
+     */
     @FXML
     void onCountrySelection(ActionEvent event) {
         Country selectedCountry = (Country) countryCombo.getSelectionModel().getSelectedItem();
@@ -94,6 +106,12 @@ public class UpdateCustomerController implements Initializable {
         }
     }
 
+    /**
+     *
+     * @param event User selects the cancel button.
+     * Allows the user to stay on the page if they do not want to lose all of their information.
+     * @throws IOException if main dash file is not accessible.
+     */
     @FXML
     void onCancel(ActionEvent event) throws IOException {
         Alert cancelAlert = new Alert(Alert.AlertType.WARNING);
@@ -109,7 +127,9 @@ public class UpdateCustomerController implements Initializable {
         }
     }
 
-
+    /**
+     * Clears all of the error labels so the user does not think they have more errors than they have if they fix one but still have some remaining.
+     */
     private void clearErrorLabels(){
         //error labels
         fldError.setVisible(false);
@@ -120,6 +140,12 @@ public class UpdateCustomerController implements Initializable {
         nameErrorLbl.setVisible(false);
     }
 
+    /**
+     *
+     * @param event user selects the save button.
+     *  Updates the customer information in the database if there are no errors.
+     * @throws IOException if main dash file is not accessible.
+     */
     public void onSave(ActionEvent event) throws IOException {
         clearErrorLabels();
         //will create an insert into statement not a constructor for pojo object

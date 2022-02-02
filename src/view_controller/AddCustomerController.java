@@ -18,10 +18,14 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import query.CustomerQuery;
-
 import static query.FirstLevelDivQuery.getAllFirstLevelDiv;
-
+/**
+ * Class that controls the CreateCustomer FXML document.
+ */
 public class AddCustomerController implements Initializable {
+    /**
+     *Sets up fields and Combo Boxes to display the appointment options.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -36,9 +40,6 @@ public class AddCustomerController implements Initializable {
     private TextField addressTF;
 
     @FXML
-    private Button cancelBtn;
-
-    @FXML
     private TextField customerIDTF;
 
     @FXML
@@ -50,8 +51,6 @@ public class AddCustomerController implements Initializable {
     @FXML
     private TextField postalTF;
 
-    @FXML
-    private Button saveBtn;
     @FXML
     private Label nameErrorLbl;
     @FXML
@@ -70,7 +69,9 @@ public class AddCustomerController implements Initializable {
 
     @FXML
     private ComboBox<FirstLevelDiv> firstLevelDiv;
-
+    /**
+     * Clears all of the error labels so the user does not think they have more errors than they have if they fix one but still have some remaining.
+     */
     private void clearErrorLabels(){
         //error labels
         fldError.setVisible(false);
@@ -80,7 +81,12 @@ public class AddCustomerController implements Initializable {
         phoneErrorLbl.setVisible(false);
         nameErrorLbl.setVisible(false);
     }
-
+    /**
+     *
+     * @param event User selects the cancel button.
+     * Allows the user to stay on the page if they do not want to lose all of their information.
+     * @throws IOException if main dash file is not accessible.
+     */
     @FXML
     void onCancel(ActionEvent event) throws IOException {
         Alert cancelAlert = new Alert(Alert.AlertType.WARNING);
@@ -96,7 +102,10 @@ public class AddCustomerController implements Initializable {
             }
 
     }
-
+    /**
+     *
+     * @param event Sets the FirstLevelDiv Combo Box.
+     */
     @FXML
     void onCountrySelection(ActionEvent event) {
         Country selectedCountry = (Country) countryCombo.getSelectionModel().getSelectedItem();
@@ -104,7 +113,12 @@ public class AddCustomerController implements Initializable {
             firstLevelDiv.setItems(getAllFirstLevelDiv(selectedCountry.getCountryID()));
         }
     }
-
+    /**
+     *
+     * @param event user selects the save button.
+     *  Creates the customer with the information in the database if there are no errors.
+     * @throws IOException if main dash file is not accessible.
+     */
     @FXML
     void onSave(ActionEvent event) throws IOException {
         clearErrorLabels();

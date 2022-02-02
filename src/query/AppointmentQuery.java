@@ -6,18 +6,24 @@ import helper.WeeklyView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
-import model.Customer;
 import model.User;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Class that queries the appointment table in the database
+ */
 public class AppointmentQuery {
     private static Connection conn = JDBC.getConnection();
     private static Statement mystmt = null;
     private static PreparedStatement ps = null;
     private static ResultSet result = null;
 
+    /**
+     *
+     * @return all appointments that are scheduled
+     */
     public static ObservableList<Appointment> getAllAppointments(){
         ObservableList<Appointment> allAppointments = FXCollections.observableArrayList();
         try {
@@ -36,7 +42,10 @@ public class AppointmentQuery {
         }
         return null;
     }
-
+    /**
+     * LAMBDA FUNCTION HERE--it adds a month to the users current day and then returns a list of all appointments within the month.
+     * @return all appointments that are scheduled for the month from the current day.
+     */
 
     public static ObservableList<Appointment> getAllAppointmentsMonthly(){
         ObservableList<Appointment> allAppointmentsMonth = FXCollections.observableArrayList();
@@ -63,6 +72,10 @@ public class AppointmentQuery {
         }
         return null;
     }
+    /**
+     * LAMBDA FUNCTION HERE--it adds a month to the users current day and then returns a list of all appointments within the week.
+     * @return all appointments that are scheduled for the week from the current day.
+     */
     public static ObservableList<Appointment> getAllAppointmentsWeek(){
         ObservableList<Appointment> allAppointmentsWeekly = FXCollections.observableArrayList();
         try {
@@ -88,7 +101,9 @@ public class AppointmentQuery {
         return null;
     }
 
-
+    /**
+     * Inserts an appointment into the database from the GUI
+     */
 
     public static void insertAppt(String title, String description, String location, String type,
                                       Timestamp start, Timestamp end,int customerID, int userID, int contactID){
@@ -133,6 +148,9 @@ public class AppointmentQuery {
         }
         return null;
     }
+    /**
+     * @return an arraylist that will be sent to be validated to ensure that a customer can't have appointments that overlap.
+     */
 
     public static ArrayList<Appointment> validateAddAppointment(LocalDate datePicked, int customerID){
         //arraylist because i am not going to display in a table or combobox
@@ -157,6 +175,12 @@ public class AppointmentQuery {
         }
         return null;
     }
+
+    /**
+     *
+     * @param a The appointment desired to be deleted
+     * @return true if the appointment was deleted successfully.
+     */
     public static boolean deleteAppointment(Appointment a){
         int id = a.getApptID();
         String sqlDelete = "DELETE FROM appointments WHERE Appointment_ID = ?";
@@ -174,6 +198,9 @@ public class AppointmentQuery {
         }
         return false;
     }
+    /**
+     * @return an arraylist that will be sent to be validated to ensure that a customer can't have appointments that overlap.
+     */
     public static ArrayList<Appointment> validateUpdateAppointment(LocalDate datePicked, int customerID, Appointment apptUpdated){
         //arraylist because i am not going to display in a table or combobox
         ArrayList<Appointment> allAppointmentsOnDate = new ArrayList<>();
@@ -197,6 +224,19 @@ public class AppointmentQuery {
         }
         return null;
     }
+
+    /**
+     *
+     * @param title Updated appointment title.
+     * @param description Updated appointment description.
+     * @param location Updated appointment location.
+     * @param type Updated appointment type.
+     * @param start Updated appointment start.
+     * @param end Updated appointment end.
+     * @param customerID Updated appointment customer information.
+     * @param userID Updated appointment user information.
+     * @param contactID Updated ccontact information.
+     */
     public static void updateAppt(String title, String description, String location, String type,
                                   Timestamp start, Timestamp end,int customerID, int userID, int contactID, int apptID){
 
@@ -218,9 +258,16 @@ public class AppointmentQuery {
 
         }catch (SQLException e){
             //
+            e.printStackTrace();
             System.out.println("something went wrong with insert into appointment");
         }
     }
+
+    /**
+     *
+     * @param customerID Customer desired to pull information report.
+     * @return List that contains how many appointments of each type a customer has.
+     */
     public static ObservableList<String>  returnTypeReport(int customerID){
         ObservableList<String> typeReport = FXCollections.observableArrayList();
         try {
@@ -241,6 +288,12 @@ public class AppointmentQuery {
         }
         return null;
     }
+
+    /**
+     *
+     * @param contactID Desired contact to return a schedule.
+     * @return List that is ordered for the contact's schedule.
+     */
     public static ObservableList<Appointment>  contactSchedule(int contactID){
         ObservableList<Appointment> contactSchedule = FXCollections.observableArrayList();
         try {
@@ -263,6 +316,11 @@ public class AppointmentQuery {
         }
         return null;
     }
+    /**
+     *
+     * @param customerID Customer desired to pull information report.
+     * @return List that contains how many appointments of each month a customer has.
+     */
     public static ObservableList<String>  returnMonthReport(int customerID){
         ObservableList<String> monthReport = FXCollections.observableArrayList();
         try {
@@ -314,7 +372,6 @@ public class AppointmentQuery {
                         break;
                 }
                 String statistic = monthName + ": " + monthCount;
-                System.out.println(statistic);
                 monthReport.add(statistic);
             }
             return monthReport;

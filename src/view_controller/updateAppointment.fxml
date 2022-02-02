@@ -91,7 +91,7 @@
                                 <Font name="System Bold" size="12.0" />
                             </font>
                         </Label>
-                        <DatePicker fx:id="datePicker" onAction="#onDateSelection" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                        <DatePicker fx:id="datePicker"  GridPane.columnIndex="3" GridPane.rowIndex="4" />
                         <Label text="Date:" GridPane.columnIndex="2" GridPane.rowIndex="4">
                             <font>
                                 <Font name="System Bold" size="12.0" />
@@ -108,11 +108,11 @@
                             </font>
                         </Label>
                         <ComboBox fx:id="startTimeCombo" onAction="#onStartTimeSelection" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <ComboBox fx:id="endTimeCombo" onAction="#onEndTimeSelection" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="endTimeCombo"  prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                         <Label GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <ComboBox fx:id="contactCombo" onAction="#onContactSelection" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <ComboBox fx:id="userIDCombo" onAction="#onUserIDSelection" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="customerIDCombo" onAction="#onCustomerIDSelection" prefWidth="150.0" GridPane.columnIndex="3" />
+                        <ComboBox fx:id="contactCombo"  prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <ComboBox fx:id="userIDCombo"  prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="customerIDCombo"  prefWidth="150.0" GridPane.columnIndex="3" />
                     </children>
                     <HBox.margin>
                         <Insets left="20.0" />

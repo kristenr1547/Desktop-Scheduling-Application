@@ -1,5 +1,6 @@
 package model;
 
+import helper.DateToStringFormat;
 import query.ContactQuery;
 import query.CustomerQuery;
 import query.UserQuery;
@@ -9,6 +10,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Appointment class creates the appointment objects that contains an apptID, Title, Description, Location, Type, Start and End Times, appointment date, involved customerID, contact, and userID
+ */
 public class Appointment {
     private int apptID;
     private String title;
@@ -25,6 +29,19 @@ public class Appointment {
     private Customer customer;
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy hh:mm");
 
+    /**
+     * Constructs the appointment
+     * @param apptID Unique appointment ID
+     * @param title appointment title
+     * @param description appointment description
+     * @param location where the appointment will be located
+     * @param type appointment type
+     * @param startTime appointment start time that includes the date
+     * @param endTime appointment end time that includes the date
+     * @param customerID
+     * @param contactID
+     * @param userID
+     */
     public Appointment(int apptID, String title, String description, String location, String type, LocalDateTime startTime, LocalDateTime endTime,
                        int customerID, int contactID, int userID) {
         this.apptID = apptID;
@@ -135,10 +152,33 @@ public class Appointment {
         return customer;
     }
 
-    public String getAppointmentStart(){
-        return startTime.format(formatter);
+    /**
+     * LAMBDA used here it assists with formatting LocalDateTime objects into strings for the table to display.
+     * @param lclDateTime The LocalDateTime object desired to be formatted into a readable string.
+     * @return a string that is easier to read and comprehend for the tableview that displays appointment start and end times.
+     */
+
+    private String timeDisplayHelper(LocalDateTime lclDateTime){
+        DateToStringFormat apptTableView = m -> m.format(formatter);
+        String readableFormat = apptTableView.convertDateTime(lclDateTime);
+        return readableFormat;
     }
+
+    /**
+     *
+     * @return Start time in a more readable string.
+     */
+
+
+    public String getAppointmentStart(){
+        return timeDisplayHelper(startTime);
+    }
+
+    /**
+     *
+     * @return End time in a more readable string.
+     */
     public String getAppointmentEnd(){
-        return endTime.format(formatter);
+        return timeDisplayHelper(endTime);
     }
 }

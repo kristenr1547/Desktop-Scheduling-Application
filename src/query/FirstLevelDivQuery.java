@@ -12,7 +12,10 @@ public class FirstLevelDivQuery {
     private static PreparedStatement ps = null;
     private static ResultSet result = null;
 
-  //to be used in add and update customer table and country class
+    /**
+     *
+     * @return A list of all first level divisions within a country.
+     */
     public static ObservableList<FirstLevelDiv> getAllFirstLevelDiv(int countryID){
         ObservableList<FirstLevelDiv> allFirstLvlDivforCountry = FXCollections.observableArrayList();
         try{
@@ -29,6 +32,10 @@ public class FirstLevelDivQuery {
         return allFirstLvlDivforCountry;
     }
 
+    /**
+     *
+     * @return Creates a FirstLevelDivision object from the ID in the database.
+     */
     public static FirstLevelDiv createFirstLevelDiv(int id){
         int divID = 0;
         String divisionName = null;
@@ -46,7 +53,7 @@ public class FirstLevelDivQuery {
             return fld;
 
         }catch (SQLException e){
-            System.out.println(" error in firstlevelqueryclass");
+            e.printStackTrace();
             return null;
         } }
 

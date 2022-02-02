@@ -17,12 +17,17 @@ import model.Customer;
 import query.AppointmentQuery;
 import query.ContactQuery;
 import query.CustomerQuery;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the report screen.
+ */
 public class ReportController implements Initializable {
+    /**
+     *Initializes and populates combo boxes for the user to select information in the reports.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //set customer combo
@@ -41,30 +46,47 @@ public class ReportController implements Initializable {
         apptIDCol.setCellValueFactory(new PropertyValueFactory<>("apptID"));
     }
 
+    /**
+     * The ObservableList that will populate the customer table.
+     */
     ObservableList<Appointment> contactSchedule = FXCollections.observableArrayList();
     Stage stage;
     Parent scene;
+
     @FXML
     private TableColumn<Appointment, Integer> apptIDCol;
-
+    /**
+     * ListView that shows how many customers are in each country.
+     */
     @FXML
     private ListView<String> countryListView;
+    /**
+     * ListView that shows how many appointments for each type.
+     */
     @FXML
     private ListView<String> apptTypeListView;
-
+    /**
+     * ListView that shows how many appointments for each month.
+     */
     @FXML
     private ListView<String> apptMonthListView;
-
+    /**
+     * ComboBox that has all contacts from database.
+     */
     @FXML
     private ComboBox<Contact> contactSelectionCombo;
-
+    /**
+     * Table that contains the appointment information for a contact's schedule.
+     */
     @FXML
     private TableView<Appointment> contactTable;
 
 
     @FXML
     private TableColumn<Appointment, Integer> customerIDCol;
-
+    /**
+     * ComboBox that has all customers from database.
+     */
     @FXML
     private ComboBox<Customer> customerSelectionCombo;
 
@@ -83,19 +105,22 @@ public class ReportController implements Initializable {
     @FXML
     private TableColumn<Appointment, String> typeCol;
 
-    @FXML
-    private Label numberOfCustomersLbl;
 
+    /**
+     * Displays the contact's schedule in a TableView.
+     * @param event User selects a contact.
+     */
     @FXML
     void onContactSelection(ActionEvent event) {
         Contact selectedContact = contactSelectionCombo.getSelectionModel().getSelectedItem();
-        System.out.println(contactSelectionCombo.getValue());
-        //insert data into table
         contactSchedule = AppointmentQuery.contactSchedule(selectedContact.getContactID());
         contactTable.setItems(contactSchedule);
     }
 
-
+    /**
+     * Displays the customers statistics in two ListViews.
+     * @param event User selects a contact.
+     */
     @FXML
     void onCustomerSelection(ActionEvent event) {
         //set type report listView
@@ -105,6 +130,12 @@ public class ReportController implements Initializable {
         //set month report listView
         apptMonthListView.setItems(AppointmentQuery.returnMonthReport(customerID));
     }
+
+    /**
+     *
+     * @param event User selects the back button and returns back to main dashboard screen.
+     * @throws IOException Error if the main dashboard is inaccessible.
+     */
     @FXML
     void onBack(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();

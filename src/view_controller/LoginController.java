@@ -27,8 +27,18 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.io.*;
 
+/**
+ * Controller for the login screen.
+ */
 public class LoginController implements Initializable {
+    /**
+     * Resource Bundle that is determined by the users system language.
+     */
     ResourceBundle rb;
+
+    /**
+     * Displays the fields in French or English depending on what the user's language system is set to.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try{
@@ -68,6 +78,9 @@ public class LoginController implements Initializable {
     private Parent scene;
     private Stage stage;
 
+    /**
+     * Alerts user if the incorrect information was inserted in to the login fields.
+     */
     private void alertUser(){
         Alert incorrectLogin = new Alert(Alert.AlertType.WARNING);
         incorrectLogin.setTitle(rb.getString("alertTitle"));
@@ -76,6 +89,12 @@ public class LoginController implements Initializable {
         incorrectLogin.setGraphic(null);
     }
 
+    /**
+     * Verifies the user's credentials and logs the time and information whether the user was successfully logged in or not.
+     * Displays an error message if the users information can not be found.
+     * @param event User selects the login button.
+     * @throws IOException if the main dash screen is not accessible.
+     */
     @FXML
     void logOn(ActionEvent event) throws IOException {
         Timestamp time = Timestamp.valueOf(LocalDateTime.now());
@@ -110,7 +129,6 @@ public class LoginController implements Initializable {
                 alert.setContentText(rb.getString("noApointment"));
                 alert.showAndWait();
             }
-            DashboardController.setCurrentuser(currentUser);
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/view_controller/dashboard.fxml"));
             stage.setScene(new Scene(scene));
