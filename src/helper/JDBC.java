@@ -6,6 +6,7 @@ import java.sql.DriverManager;
  * Class that creates the connection to the MYSQL DATABASE.
  */
 public class JDBC {
+    //setting up connection to database
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";
     private static final String location = "//localhost/";
